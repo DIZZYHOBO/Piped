@@ -19,8 +19,11 @@ NODEJS_VERSION="22"
 # Eclipse Temurin (Adoptium) JDK — required by piped-backend.
 JAVA_VERSION="21"
 
-# Rust toolchain version installed via rustup for piped-proxy.
-RUST_VERSION="1.83.0"
+# Rust toolchain installed via rustup for piped-proxy.
+# Pinned to "stable" because piped-proxy's transitive deps (notably `aligned`)
+# require edition 2024, stabilized in Rust 1.85.0 (Feb 2025). Following stable
+# avoids re-pinning each time a new dep raises the bar.
+RUST_VERSION="stable"
 
 #=================================================
 # HELPERS
