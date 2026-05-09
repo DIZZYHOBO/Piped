@@ -36,7 +36,6 @@ ram.runtime = "1G"
 [install]
     [install.domain]
     type = "domain"
-    full_domain = true
 
     [install.init_main_permission]
     help.en = "Piped is intended to be public. Choose 'visitors' unless you want to gate it behind YunoHost SSO."
