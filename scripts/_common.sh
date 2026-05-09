@@ -26,20 +26,52 @@ RUST_VERSION="1.83.0"
 # HELPERS
 #=================================================
 
-# Install Node.js from NodeSource (predictable across YunoHost versions).
+# Install Node.js as a standalone tarball into ${install_dir}/node.
+# We deliberately avoid NodeSource APT: its nodejs package conflicts with the
+# Debian-packaged libnode108, which would force apt to remove dozens of
+# node-* system packages that other YunoHost apps depend on.
 piped_install_nodejs() {
-    if command -v node >/dev/null 2>&1 \
-        && node --version | grep -q "^v${NODEJS_VERSION}\."; then
+    local install_dir="$1"
+    local node_dir="${install_dir}/node"
+
+    if [ -x "${node_dir}/bin/node" ] \
+        && "${node_dir}/bin/node" --version | grep -q "^v${NODEJS_VERSION}\."; then
         return 0
     fi
-    ynh_print_info "Installing Node.js ${NODEJS_VERSION} from NodeSource..."
-    mkdir -p /etc/apt/keyrings
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
-        | gpg --dearmor --yes -o /etc/apt/keyrings/nodesource.gpg
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODEJS_VERSION}.x nodistro main" \
-        > /etc/apt/sources.list.d/nodesource.list
-    apt-get update -qq
-    apt-get install -y nodejs
+
+    local arch
+    case "$(dpkg --print-architecture)" in
+        amd64) arch="x64" ;;
+        arm64) arch="arm64" ;;
+        armhf) arch="armv7l" ;;
+        *) ynh_die --message="No Node.js binary tarball is available for $(dpkg --print-architecture)." ;;
+    esac
+
+    ynh_print_info "Resolving the latest Node.js ${NODEJS_VERSION}.x release..."
+    local latest
+    latest="$(curl -fsSL "https://nodejs.org/dist/index.json" \
+        | python3 -c "import json,sys
+data=json.load(sys.stdin)
+print(next(x['version'] for x in data if x['version'].startswith('v${NODEJS_VERSION}.')))")"
+    if [ -z "$latest" ]; then
+        ynh_die --message="Could not determine latest Node ${NODEJS_VERSION}.x version from nodejs.org."
+    fi
+
+    local tarball="node-${latest}-linux-${arch}.tar.xz"
+    local url="https://nodejs.org/dist/${latest}/${tarball}"
+    local tmp
+    tmp="$(mktemp /tmp/piped-node-XXXXXX.tar.xz)"
+    ynh_print_info "Downloading ${url}..."
+    curl -fsSL -o "$tmp" "$url" || {
+        rm -f "$tmp"
+        ynh_die --message="Failed to download Node.js tarball from ${url}."
+    }
+
+    rm -rf "$node_dir"
+    mkdir -p "$node_dir"
+    tar -xJf "$tmp" -C "$node_dir" --strip-components=1
+    rm -f "$tmp"
+    chmod -R go+rX "$node_dir"
 }
 
 # Install Eclipse Temurin JDK from the Adoptium APT repository.
@@ -109,13 +141,17 @@ VITE_PIPED_PROXY=https://${domain}/proxy
 VITE_PIPED_INSTANCES=https://piped-instances.kavin.rocks/
 EOF
 
-    chown -R "$app:$app" "$fe"
+    piped_install_nodejs "$install_dir"
+    chown -R "$app:$app" "$fe" "${install_dir}/node"
 
-    piped_install_nodejs
     ynh_print_info "Building Piped frontend with Vite (~2 min)..."
+    # --legacy-peer-deps: vite-plugin-pwa@1.2.0 declares peer support up to vite@7
+    # but Piped pins vite@8. Skipping the strict peer-deps check is the upstream-
+    # recommended workaround (npm itself prints this hint when it fails).
     sudo -u "$app" bash -c "
         cd '${fe}'
-        npm install --no-audit --no-fund --prefer-offline
+        export PATH='${install_dir}/node/bin:\$PATH'
+        npm install --no-audit --no-fund --legacy-peer-deps
         npm run build
     "
 
