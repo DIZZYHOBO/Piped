@@ -150,7 +150,7 @@ EOF
     # recommended workaround (npm itself prints this hint when it fails).
     sudo -u "$app" bash -c "
         cd '${fe}'
-        export PATH='${install_dir}/node/bin:\$PATH'
+        export PATH=\"${install_dir}/node/bin:\$PATH\"
         npm install --no-audit --no-fund --legacy-peer-deps
         npm run build
     "
@@ -179,7 +179,7 @@ piped_build_backend() {
     sudo -u "$app" bash -c "
         cd '${src}'
         export JAVA_HOME='${java_home}'
-        export PATH='${java_home}/bin:\$PATH'
+        export PATH=\"${java_home}/bin:\$PATH\"
         chmod +x ./gradlew
         ./gradlew --no-daemon shadowJar
     "
@@ -214,7 +214,7 @@ piped_build_proxy() {
         cd '${src}'
         export RUSTUP_HOME='${cargo_home}/rustup'
         export CARGO_HOME='${cargo_home}'
-        export PATH='${cargo_home}/bin:\$PATH'
+        export PATH=\"${cargo_home}/bin:\$PATH\"
         cargo build --release --locked
     "
 
