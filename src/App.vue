@@ -1,25 +1,28 @@
 <template>
-    <div
-        class="flex min-h-screen w-full flex-col bg-white px-[1vw] py-5 text-black antialiased dark:bg-dark-900 dark:text-white"
-        :class="[theme]"
-    >
-        <div class="flex-1">
-            <NavBar />
-            <router-view v-slot="{ Component }">
-                <keep-alive :max="5">
-                    <component :is="Component" :key="$route.fullPath" />
-                </keep-alive>
-            </router-view>
+    <div class="flex min-h-screen w-full flex-col bg-yt-bg text-yt-text antialiased" :class="[theme]">
+        <NavBar @toggle-sidebar="sidebarCollapsed = !sidebarCollapsed" />
+        <div class="flex flex-1">
+            <SidebarMenu :collapsed="sidebarCollapsed" />
+            <main class="min-w-0 flex-1 px-[1vw] pt-2 pb-10 sm:px-4">
+                <router-view v-slot="{ Component }">
+                    <keep-alive :max="5">
+                        <component :is="Component" :key="$route.fullPath" />
+                    </keep-alive>
+                </router-view>
+                <FooterComponent />
+            </main>
         </div>
-
-        <FooterComponent />
     </div>
 </template>
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import NavBar from "./components/NavBar.vue";
+import SidebarMenu from "./components/SidebarMenu.vue";
 import FooterComponent from "./components/FooterComponent.vue";
+
+const sidebarCollapsed = ref(localStorage.getItem("sidebarCollapsed") === "1");
+watch(sidebarCollapsed, v => localStorage.setItem("sidebarCollapsed", v ? "1" : "0"));
 import { testLocalStorage, usePreferenceString } from "@/composables/usePreferences.js";
 import { getDefaultLanguage, TimeAgo, TimeAgoConfig } from "@/composables/useFormatting.js";
 import { fetchSubscriptions } from "@/composables/useSubscriptions.js";

@@ -1,21 +1,34 @@
 <template>
-    <nav class="relative flex w-full flex-wrap items-center justify-center px-2 pb-2.5 sm:px-4">
-        <div class="flex flex-1 justify-start">
-            <router-link class="flex items-center font-sans text-3xl font-bold" to="/"
-                ><img
-                    alt="logo"
-                    src="/img/icons/logo.svg"
-                    height="32"
-                    width="32"
-                    class="mr-[-0.6rem] w-10"
-                />iped</router-link
+    <header class="sticky top-0 z-50 flex h-(--topbar-h) items-center gap-2 bg-yt-bg px-2 sm:gap-4 sm:px-4">
+        <!-- Left: hamburger + logo -->
+        <div class="flex items-center gap-2 md:min-w-(--sidebar-w)">
+            <button
+                type="button"
+                class="hidden size-10 items-center justify-center rounded-full text-yt-text hover:bg-yt-surface md:inline-flex"
+                aria-label="Toggle menu"
+                @click="$emit('toggle-sidebar')"
             >
+                <i-fa6-solid-bars />
+            </button>
+            <button
+                type="button"
+                class="flex size-10 items-center justify-center rounded-full text-yt-text hover:bg-yt-surface md:hidden"
+                aria-label="Mobile nav"
+                @click="showMobileNav = !showMobileNav"
+            >
+                <i-fa6-solid-bars />
+            </button>
+            <router-link to="/" class="flex items-center font-sans text-2xl font-bold tracking-tight">
+                <img alt="logo" src="/img/icons/logo.svg" height="32" width="32" class="-mr-2 w-8" />iped
+            </router-link>
         </div>
-        <div class="relative inline-flex items-center max-md:hidden">
+
+        <!-- Middle: search (desktop) -->
+        <div class="relative mx-auto hidden max-w-[640px] flex-1 md:flex">
             <input
                 ref="videoSearch"
                 v-model="searchText"
-                class="h-10 w-72 rounded-md bg-gray-300 px-2.5 pr-20 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                class="h-10 w-full rounded-l-full border border-yt-border bg-yt-bg px-4 text-base text-yt-text outline-none focus:border-blue-500 focus:shadow-[inset_0_0_0_1px_#3ea6ff] dark:bg-dark-900"
                 type="text"
                 role="search"
                 :title="$t('actions.search')"
@@ -25,101 +38,42 @@
                 @focus="onInputFocus"
                 @blur="onInputBlur"
             />
+            <button
+                id="search-btn"
+                class="flex h-10 w-16 items-center justify-center rounded-r-full border border-l-0 border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover"
+                :title="$t('actions.search')"
+                @click="onSearchClick"
+            >
+                <i-fa6-solid-magnifying-glass />
+            </button>
             <ClearButton v-if="searchText" @clear="searchText = ''" />
         </div>
-        <button
-            id="search-btn"
-            class="mx-1 hidden h-10 w-auto cursor-pointer rounded-sm bg-gray-300 px-2.5 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-[848px]:hidden max-md:px-2 min-[848px]:inline-block md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            @click="onSearchClick"
-        >
-            <i-fa6-solid-magnifying-glass />
-        </button>
-        <!-- three vertical lines for toggling the hamburger menu on mobile -->
-        <button class="mr-3 flex flex-col justify-end md:hidden" @click="showTopNav = !showTopNav">
-            <span class="my-[0.1125rem] rounded-xl bg-dark-900 px-2.5 py-px dark:bg-white"></span>
-            <span class="my-[0.1125rem] rounded-xl bg-dark-900 px-2.5 py-px dark:bg-white"></span>
-            <span class="my-[0.1125rem] rounded-xl bg-dark-900 px-2.5 py-px dark:bg-white"></span>
-        </button>
-        <!-- navigation bar for large screen devices -->
-        <ul class="hidden list-none *:pl-3 md:flex md:flex-1 md:justify-end">
-            <li v-if="shouldShowTrending">
-                <router-link
-                    v-t="'titles.trending'"
-                    to="/trending"
-                    class="hover:text-red-500 dark:hover:text-red-400"
-                />
-            </li>
-            <li>
-                <router-link
-                    v-t="'titles.preferences'"
-                    to="/preferences"
-                    class="hover:text-red-500 dark:hover:text-red-400"
-                />
-            </li>
-            <li v-if="shouldShowLogin">
-                <router-link v-t="'titles.login'" to="/login" class="hover:text-red-500 dark:hover:text-red-400" />
-            </li>
-            <li v-if="shouldShowRegister">
-                <router-link
-                    v-t="'titles.register'"
-                    to="/register"
-                    class="hover:text-red-500 dark:hover:text-red-400"
-                />
-            </li>
-            <li v-if="shouldShowHistory">
-                <router-link v-t="'titles.history'" to="/history" class="hover:text-red-500 dark:hover:text-red-400" />
-            </li>
-            <li>
-                <router-link
-                    v-t="'titles.playlists'"
-                    to="/playlists"
-                    class="hover:text-red-500 dark:hover:text-red-400"
-                />
-            </li>
-            <li v-if="!shouldShowTrending">
-                <router-link v-t="'titles.feed'" to="/feed" class="hover:text-red-500 dark:hover:text-red-400" />
-            </li>
-        </ul>
-    </nav>
-    <!-- navigation bar for mobile devices -->
-    <div
-        v-if="showTopNav"
-        class="mb-4 flex flex-col *:flex *:w-full *:items-center *:gap-1 *:border-b *:border-dark-100 *:p-1"
-    >
-        <router-link v-if="shouldShowTrending" to="/trending">
-            <i-fa6-solid-fire />
-            <i18n-t keypath="titles.trending"></i18n-t>
-        </router-link>
-        <router-link to="/preferences">
-            <i-fa6-solid-gear />
-            <i18n-t keypath="titles.preferences"></i18n-t>
-        </router-link>
-        <router-link v-if="shouldShowLogin" to="/login">
-            <i-fa6-solid-user />
-            <i18n-t keypath="titles.login"></i18n-t>
-        </router-link>
-        <router-link v-if="shouldShowLogin" to="/register">
-            <i-fa6-solid-user-plus />
-            <i18n-t keypath="titles.register"></i18n-t>
-        </router-link>
-        <router-link v-if="shouldShowHistory" to="/history">
-            <i-fa6-solid-clock-rotate-left />
-            <i18n-t keypath="titles.history"></i18n-t>
-        </router-link>
-        <router-link to="/playlists">
-            <i-fa6-solid-list />
-            <i18n-t keypath="titles.playlists"></i18n-t>
-        </router-link>
-        <router-link v-if="!shouldShowTrending" to="/feed">
-            <i-fa6-solid-play />
-            <i18n-t keypath="titles.feed"></i18n-t>
-        </router-link>
-    </div>
-    <!-- search suggestions for mobile devices -->
-    <div class="relative mb-2 inline-flex w-full items-center md:hidden">
+
+        <!-- Right: actions -->
+        <div class="ml-auto flex items-center gap-1">
+            <router-link
+                v-if="shouldShowLogin"
+                to="/login"
+                class="hidden h-9 items-center gap-1.5 rounded-full border border-yt-border px-3 text-sm font-medium text-yt-brand-red hover:bg-yt-surface md:inline-flex"
+            >
+                <i-fa6-solid-user />
+                <span v-t="'titles.login'" />
+            </router-link>
+            <span
+                v-else
+                class="grid size-8 place-items-center rounded-full bg-linear-to-br from-red-700 to-orange-500 text-sm font-semibold text-white"
+                :title="$t('titles.preferences')"
+            >
+                P
+            </span>
+        </div>
+    </header>
+
+    <!-- Mobile search bar (below the top bar on small screens) -->
+    <div class="relative mx-2 mt-2 mb-1 inline-flex w-[calc(100%-1rem)] items-center md:hidden">
         <input
             v-model="searchText"
-            class="h-10 w-full rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+            class="h-10 w-full rounded-full border border-yt-border bg-yt-bg px-4 text-yt-text focus:border-blue-500 focus:outline-none dark:bg-dark-900"
             type="text"
             role="search"
             :title="$t('actions.search')"
@@ -131,6 +85,43 @@
         />
         <ClearButton v-if="searchText" @clear="searchText = ''" />
     </div>
+
+    <!-- Mobile slide-down nav -->
+    <nav v-if="showMobileNav" class="mb-2 flex flex-col border-y border-yt-border bg-yt-bg md:hidden">
+        <router-link to="/" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-house /> Home
+        </router-link>
+        <router-link to="/feed" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-rectangle-list /> Subscriptions
+        </router-link>
+        <router-link to="/trending" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-fire /> Trending
+        </router-link>
+        <router-link
+            v-if="shouldShowHistory"
+            to="/history"
+            class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface"
+        >
+            <i-fa6-solid-clock-rotate-left /> History
+        </router-link>
+        <router-link to="/playlists" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-list /> Playlists
+        </router-link>
+        <router-link v-if="shouldShowLogin" to="/login" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-user /> Sign in
+        </router-link>
+        <router-link
+            v-if="shouldShowRegister"
+            to="/register"
+            class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface"
+        >
+            <i-fa6-solid-user-plus /> Register
+        </router-link>
+        <router-link to="/preferences" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-gear /> Settings
+        </router-link>
+    </nav>
+
     <SearchSuggestions
         v-show="(searchText || showSearchHistory) && suggestionsVisible"
         ref="searchSuggestions"
@@ -146,7 +137,9 @@ import SearchSuggestions from "./SearchSuggestions.vue";
 import ClearButton from "./ui/ClearButton.vue";
 import hotkeys from "hotkeys-js";
 import { fetchJson, authApiUrl, getAuthToken } from "@/composables/useApi.js";
-import { getPreferenceBoolean, getPreferenceString } from "@/composables/usePreferences.js";
+import { getPreferenceBoolean } from "@/composables/usePreferences.js";
+
+defineEmits(["toggle-sidebar"]);
 
 const router = useRouter();
 const route = useRoute();
@@ -156,33 +149,21 @@ const searchSuggestions = ref(null);
 
 const searchText = ref("");
 const suggestionsVisible = ref(false);
-const showTopNav = ref(false);
+const showMobileNav = ref(false);
 const registrationDisabled = ref(false);
 
-const shouldShowLogin = computed(() => {
-    return getAuthToken() == null;
-});
-
-const shouldShowRegister = computed(() => {
-    return registrationDisabled.value == false ? shouldShowLogin.value : false;
-});
-
-const shouldShowHistory = computed(() => {
-    return getPreferenceBoolean("watchHistory", false);
-});
-
-const shouldShowTrending = computed(() => {
-    return getPreferenceString("homepage", "trending") != "trending";
-});
-
-const showSearchHistory = computed(() => {
-    return getPreferenceBoolean("searchHistory", false) && localStorage.getItem("search_history");
-});
+const shouldShowLogin = computed(() => getAuthToken() == null);
+const shouldShowRegister = computed(() => (registrationDisabled.value ? false : shouldShowLogin.value));
+const shouldShowHistory = computed(() => getPreferenceBoolean("watchHistory", false));
+const showSearchHistory = computed(
+    () => getPreferenceBoolean("searchHistory", false) && localStorage.getItem("search_history"),
+);
 
 watch(
     () => route.fullPath,
     () => {
         updateSearchTextFromURLSearchParams();
+        showMobileNav.value = false;
     },
 );
 
@@ -194,25 +175,21 @@ function updateSearchTextFromURLSearchParams() {
 function focusOnSearchBar() {
     hotkeys("ctrl+k", event => {
         event.preventDefault();
-        videoSearch.value.focus();
+        videoSearch.value?.focus();
     });
 }
 
 function onKeyUp(e) {
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-        e.preventDefault();
-    }
-    searchSuggestions.value.onKeyUp(e);
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+    searchSuggestions.value?.onKeyUp(e);
 }
 
 function onKeyPress(e) {
-    if (e.key === "Enter") {
-        submitSearch(e);
-    }
+    if (e.key === "Enter") submitSearch(e);
 }
 
 function onInputFocus() {
-    if (showSearchHistory.value) searchSuggestions.value.refreshSuggestions();
+    if (showSearchHistory.value) searchSuggestions.value?.refreshSuggestions();
     suggestionsVisible.value = true;
 }
 
@@ -224,7 +201,7 @@ function onSearchTextChange(text) {
     searchText.value = text;
 }
 
-async function fetchAuthConfig() {
+function fetchAuthConfig() {
     fetchJson(authApiUrl() + "/config").then(config => {
         registrationDisabled.value = config?.registrationDisabled === true;
     });
@@ -237,14 +214,10 @@ function onSearchClick(e) {
 function submitSearch(e) {
     e.target.blur();
     if (searchText.value) {
-        router.push({
-            name: "SearchResults",
-            query: { search_query: searchText.value },
-        });
+        router.push({ name: "SearchResults", query: { search_query: searchText.value } });
     } else {
         router.push("/");
     }
-    return;
 }
 
 onMounted(() => {
@@ -253,5 +226,3 @@ onMounted(() => {
     focusOnSearchBar();
 });
 </script>
-
-<style></style>

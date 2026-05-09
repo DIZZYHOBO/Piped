@@ -13,6 +13,33 @@
     --color-dark-700: #1a1a1a;
     --color-dark-800: #141414;
     --color-dark-900: #0f0f0f;
+
+    /* YouTube 2025-26 redesign tokens, used by the new chrome (NavBar, SidebarMenu)
+       and being rolled out across pages. Light values default; dark overrides are
+       set in the @layer base block below. */
+    --color-yt-bg: #ffffff;
+    --color-yt-surface: #f2f2f2;
+    --color-yt-surface-hover: #e5e5e5;
+    --color-yt-border: #e5e5e5;
+    --color-yt-text: #0f0f0f;
+    --color-yt-text-secondary: #606060;
+    --color-yt-brand-red: #ff0000;
+    --color-yt-brand-red-hover: #ff3333;
+
+    --topbar-h: 56px;
+    --sidebar-w: 240px;
+    --sidebar-rail-w: 72px;
+}
+
+@layer base {
+    .dark {
+        --color-yt-bg: #0f0f0f;
+        --color-yt-surface: #272727;
+        --color-yt-surface-hover: #3f3f3f;
+        --color-yt-border: #303030;
+        --color-yt-text: #f1f1f1;
+        --color-yt-text-secondary: #aaaaaa;
+    }
 }
 
 @utility skip-segment-button {
