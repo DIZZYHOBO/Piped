@@ -1,0 +1,35 @@
+[Unit]
+Description=Piped backend (Java API)
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__/backend
+
+# JVM tuning — leave headroom on a 1GB-runtime YunoHost server.
+Environment="JAVA_OPTS=-Xmx512m -Xms128m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError"
+
+ExecStart=/bin/bash -lc 'exec /usr/lib/jvm/temurin-21-jdk-$(dpkg --print-architecture)/bin/java $JAVA_OPTS -jar __INSTALL_DIR__/backend/piped-backend.jar'
+
+Restart=on-failure
+RestartSec=5s
+
+# Sensible logging.
+StandardOutput=append:/var/log/__APP__/backend.log
+StandardError=append:/var/log/__APP__/backend.log
+
+# Hardening (mirrors what YunoHost typically applies).
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ReadWritePaths=__INSTALL_DIR__/backend /var/log/__APP__ __DATA_DIR__
+
+[Install]
+WantedBy=multi-user.target

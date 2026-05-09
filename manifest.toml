@@ -1,0 +1,92 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/main/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "piped"
+name = "Piped"
+description.en = "Privacy-friendly alternative YouTube frontend (full self-hosted stack: frontend + backend + proxy + PostgreSQL)"
+description.fr = "Frontend YouTube alternatif respectueux de la vie privée (pile complète auto-hébergée : frontend + backend + proxy + PostgreSQL)"
+
+version = "1.0.0~ynh1"
+
+maintainers = ["dizzyhobo"]
+
+[upstream]
+license = "AGPL-3.0-only"
+website = "https://piped.video"
+demo = "https://piped.video"
+admindoc = "https://docs.piped.video/docs/self-hosting/"
+code = "https://github.com/TeamPiped/Piped"
+cpe = "cpe:2.3:a:teampiped:piped"
+
+[integration]
+yunohost = ">= 11.2.18"
+helpers_version = "2.1"
+architectures = ["amd64", "arm64"]
+multi_instance = true
+ldap = false
+sso = false
+# Frontend dist + backend JAR + proxy binary + postgres data
+disk = "3G"
+# Building piped-backend with Gradle and piped-proxy with Cargo is RAM-hungry
+ram.build = "2G"
+# Java backend wants ~512M, Postgres ~256M, proxy small, leave headroom
+ram.runtime = "1G"
+
+[install]
+    [install.domain]
+    type = "domain"
+    full_domain = true
+
+    [install.init_main_permission]
+    help.en = "Piped is intended to be public. Choose 'visitors' unless you want to gate it behind YunoHost SSO."
+    type = "group"
+    default = "visitors"
+
+    [install.admin_email]
+    ask.en = "Admin contact email (used as a fallback for backend logs and abuse contact)"
+    ask.fr = "Email de contact administrateur"
+    type = "string"
+    example = "admin@example.com"
+
+    [install.disable_registration]
+    ask.en = "Disable new account registration on the backend?"
+    ask.fr = "Désactiver l'enregistrement de nouveaux comptes sur le backend ?"
+    help.en = "If yes, only existing accounts can log in. Recommended for personal/private instances."
+    type = "boolean"
+    default = false
+
+[resources]
+
+    [resources.system_user]
+
+    [resources.install_dir]
+    group = "www-data:r-x"
+
+    [resources.data_dir]
+    # PostgreSQL lives in its system path; this dir holds backend/proxy persistent caches
+    subdirs = ["proxy-cache"]
+
+    [resources.permissions]
+    main.url = "/"
+    main.allowed = "visitors"
+
+    [resources.ports]
+    backend.default = 8780
+    proxy.default = 8781
+
+    [resources.apt]
+    packages = [
+        "git",
+        "curl",
+        "ca-certificates",
+        "build-essential",
+        "pkg-config",
+        "libssl-dev",
+        "nginx",
+        "wget",
+        "unzip"
+    ]
+
+    [resources.database]
+    type = "postgresql"

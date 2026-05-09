@@ -1,0 +1,61 @@
+#!/bin/bash
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+ynh_script_progression --message="Upgrading Piped..."
+
+# Reload settings persisted at install time.
+admin_email="$(ynh_app_setting_get --key=admin_email)"
+disable_registration="$(ynh_app_setting_get --key=disable_registration)"
+jwt_secret="$(ynh_app_setting_get --key=jwt_secret)"
+
+# Generate jwt_secret if missing (older installs).
+if [ -z "$jwt_secret" ]; then
+    jwt_secret="$(ynh_string_random --length=64)"
+    ynh_app_setting_set --key=jwt_secret --value="$jwt_secret"
+fi
+
+frontend_url="https://${domain}"
+proxy_url="https://${domain}/proxy"
+
+#=================================================
+# STOP SERVICES
+#=================================================
+ynh_systemctl --service="${app}-backend" --action=stop
+ynh_systemctl --service="${app}-proxy"   --action=stop
+
+#=================================================
+# REBUILD
+#=================================================
+ynh_script_progression --message="Rebuilding the frontend..."
+piped_build_frontend "$install_dir" "$app" "$domain" "$YNH_APP_BASEDIR"
+
+ynh_script_progression --message="Rebuilding piped-backend..."
+piped_build_backend "$install_dir" "$app"
+
+ynh_script_progression --message="Rebuilding piped-proxy..."
+piped_build_proxy "$install_dir" "$app"
+
+#=================================================
+# REGENERATE CONFIG
+#=================================================
+ynh_script_progression --message="Regenerating configuration..."
+
+ynh_config_add --template="config.properties" \
+    --destination="${install_dir}/backend/config.properties"
+chown "$app:$app" "${install_dir}/backend/config.properties"
+chmod 0640 "${install_dir}/backend/config.properties"
+
+ynh_config_add_systemd --service="${app}-backend" --template="piped-backend.service"
+ynh_config_add_systemd --service="${app}-proxy"   --template="piped-proxy.service"
+
+ynh_config_add_nginx
+
+#=================================================
+# RESTART
+#=================================================
+ynh_systemctl --service="${app}-backend" --action=start
+ynh_systemctl --service="${app}-proxy"   --action=start
+
+ynh_script_progression --message="Piped upgrade complete."

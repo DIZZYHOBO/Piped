@@ -1,0 +1,35 @@
+[Unit]
+Description=Piped proxy (Rust media proxy)
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__
+
+Environment="BIND=127.0.0.1:__PORT_PROXY__"
+Environment="UDS=0"
+Environment="CACHE_PATH=__DATA_DIR__/proxy-cache"
+Environment="ENABLE_CACHE=1"
+Environment="MAX_FILE_SIZE=8589934592"
+
+ExecStart=__INSTALL_DIR__/piped-proxy
+
+Restart=on-failure
+RestartSec=5s
+
+StandardOutput=append:/var/log/__APP__/proxy.log
+StandardError=append:/var/log/__APP__/proxy.log
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ReadWritePaths=__DATA_DIR__/proxy-cache /var/log/__APP__
+
+[Install]
+WantedBy=multi-user.target

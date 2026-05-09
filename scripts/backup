@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+ynh_script_progression --message="Backing up Piped..."
+
+# Built artifacts can be reproduced from upstream — only back up what's expensive to lose:
+# the rendered frontend (in case upstream is unavailable), the backend JAR + config, and
+# the persistent data dir.
+ynh_backup --src_path="${install_dir}/dist"
+ynh_backup --src_path="${install_dir}/backend"
+ynh_backup --src_path="${install_dir}/piped-proxy"
+ynh_backup --src_path="$data_dir"
+
+# nginx + systemd configs.
+ynh_backup --src_path="/etc/nginx/conf.d/${domain}.d/${app}.conf"
+ynh_backup --src_path="/etc/systemd/system/${app}-backend.service"
+ynh_backup --src_path="/etc/systemd/system/${app}-proxy.service"
+
+# PostgreSQL dump.
+ynh_psql_dump_db > "db.sql"

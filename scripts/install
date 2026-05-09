@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# APP RESOURCES (auto-provisioned from manifest.toml)
+#=================================================
+# YunoHost has already created on our behalf:
+#   $app, $install_dir, $data_dir, $domain, $path,
+#   $port_backend, $port_proxy,
+#   $db_name, $db_user, $db_pwd
+# Install args: $admin_email, $disable_registration
+
+ynh_script_progression --message="Setting up Piped (long install: frontend, backend, and proxy are all built from source)..."
+
+#=================================================
+# DERIVE / GENERATE RUNTIME VALUES
+#=================================================
+
+# JWT signing secret used by piped-backend for user accounts.
+jwt_secret="$(ynh_string_random --length=64)"
+ynh_app_setting_set --key=jwt_secret --value="$jwt_secret"
+
+# Convert the boolean install option into the string the backend expects.
+case "$disable_registration" in
+    1|true|True|TRUE) disable_registration="true" ;;
+    *)                disable_registration="false" ;;
+esac
+
+ynh_app_setting_set --key=admin_email --value="$admin_email"
+ynh_app_setting_set --key=disable_registration --value="$disable_registration"
+
+# Public URLs used by both the frontend (baked at build time) and the backend's
+# config.properties (read at runtime).
+frontend_url="https://${domain}"
+proxy_url="https://${domain}/proxy"
+
+#=================================================
+# BUILD COMPONENTS FROM SOURCE
+#=================================================
+ynh_script_progression --message="Building the frontend (Vite — ~2 min)..."
+piped_build_frontend "$install_dir" "$app" "$domain" "$YNH_APP_BASEDIR"
+
+ynh_script_progression --message="Building piped-backend (Gradle — ~5-10 min)..."
+piped_build_backend "$install_dir" "$app"
+
+ynh_script_progression --message="Building piped-proxy (Cargo — ~3-7 min)..."
+piped_build_proxy "$install_dir" "$app"
+
+#=================================================
+# WRITE BACKEND CONFIG
+#=================================================
+ynh_script_progression --message="Writing backend configuration..."
+
+mkdir -p "${install_dir}/backend"
+ynh_config_add --template="config.properties" \
+    --destination="${install_dir}/backend/config.properties"
+chown "$app:$app" "${install_dir}/backend/config.properties"
+chmod 0640 "${install_dir}/backend/config.properties"
+
+#=================================================
+# CREATE DATA DIRS
+#=================================================
+mkdir -p "${data_dir}/proxy-cache" "/var/log/${app}"
+chown -R "$app:$app" "${data_dir}/proxy-cache" "/var/log/${app}"
+
+#=================================================
+# SET UP SYSTEMD SERVICES
+#=================================================
+ynh_script_progression --message="Configuring systemd services..."
+ynh_config_add_systemd --service="${app}-backend" --template="piped-backend.service"
+ynh_config_add_systemd --service="${app}-proxy"   --template="piped-proxy.service"
+
+yunohost service add "${app}-backend" \
+    --description="Piped Java backend (API)" \
+    --log="/var/log/${app}/backend.log"
+yunohost service add "${app}-proxy" \
+    --description="Piped Rust media proxy" \
+    --log="/var/log/${app}/proxy.log"
+
+#=================================================
+# NGINX
+#=================================================
+ynh_script_progression --message="Configuring nginx..."
+ynh_config_add_nginx
+
+#=================================================
+# START
+#=================================================
+ynh_script_progression --message="Starting Piped backend and proxy..."
+ynh_systemctl --service="${app}-backend" --action=start
+ynh_systemctl --service="${app}-proxy"   --action=start
+
+ynh_script_progression --message="Piped is installed at ${frontend_url}/  — first page load may take ~30s while the backend warms up."

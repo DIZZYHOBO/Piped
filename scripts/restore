@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+ynh_script_progression --message="Restoring Piped..."
+
+# install_dir is recreated by YunoHost; restore artifacts into it.
+ynh_restore
+
+# Restore PostgreSQL contents.
+ynh_psql_db_shell < "db.sql"
+
+# Re-register systemd services with YunoHost.
+yunohost service add "${app}-backend" --description="Piped Java backend (API)" --log="/var/log/${app}/backend.log"
+yunohost service add "${app}-proxy"   --description="Piped Rust media proxy"   --log="/var/log/${app}/proxy.log"
+
+# Reinstall the runtime dependencies that the build pulled in but that are not part of
+# the YunoHost backup (Java, Node is not needed at runtime, Rust is not needed at runtime).
+piped_install_java
+
+# Reload nginx + start services.
+ynh_systemctl --service="nginx" --action=reload
+ynh_systemctl --service="${app}-backend" --action=start
+ynh_systemctl --service="${app}-proxy" --action=start
+
+ynh_script_progression --message="Piped restored."
