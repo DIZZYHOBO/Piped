@@ -1,11 +1,36 @@
 <template>
-    <h1 v-t="'titles.trending'" class="my-4 text-center font-bold" />
+    <div class="flex items-center gap-3 pt-3 pb-2">
+        <i-fa6-solid-fire class="text-2xl text-yt-brand-red" />
+        <h1 v-t="'titles.trending'" class="text-2xl font-bold text-yt-text" />
+    </div>
 
-    <hr />
+    <nav class="sticky top-(--topbar-h) z-20 -mx-1 scrollbar-hidden flex gap-2 overflow-x-auto bg-yt-bg px-1 py-3">
+        <button class="shrink-0 rounded-lg bg-yt-text px-3 py-1.5 text-sm font-medium text-yt-bg">All</button>
+        <button
+            class="shrink-0 rounded-lg border border-yt-border bg-yt-surface px-3 py-1.5 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+        >
+            Music
+        </button>
+        <button
+            class="shrink-0 rounded-lg border border-yt-border bg-yt-surface px-3 py-1.5 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+        >
+            Gaming
+        </button>
+        <button
+            class="shrink-0 rounded-lg border border-yt-border bg-yt-surface px-3 py-1.5 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+        >
+            News
+        </button>
+        <button
+            class="shrink-0 rounded-lg border border-yt-border bg-yt-surface px-3 py-1.5 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+        >
+            Live
+        </button>
+    </nav>
 
     <LoadingIndicatorPage
         :show-content="videos.length != 0"
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
+        class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
     >
         <VideoItem v-for="video in videos" :key="video.url" :item="video" height="118" width="210" />
     </LoadingIndicatorPage>

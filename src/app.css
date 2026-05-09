@@ -67,3 +67,10 @@
     line-height: inherit;
     margin-left: 0.4em;
 }
+
+@utility scrollbar-hidden {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

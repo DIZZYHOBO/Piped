@@ -1,66 +1,63 @@
 <template>
-    <h1 v-t="'titles.subscriptions'" class="my-4 text-center font-bold" />
-    <!-- import / export section -->
-    <div class="flex flex-wrap justify-between">
-        <div class="flex gap-1">
-            <!-- import json/csv -->
-            <router-link
-                v-t="'actions.import_from_json_csv'"
-                to="/import"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            />
-            <!-- export to json -->
-            <button
-                v-t="'actions.export_to_json'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="exportHandler"
-            />
-        </div>
-        <div class="m-1 flex flex-wrap gap-1">
-            <!-- import channel groups to json-->
-            <div>
-                <label
-                    for="fileSelector"
-                    class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                    v-text="`${$t('actions.import_from_json')} (${$t('titles.channel_groups')})`"
-                />
-                <input
-                    id="fileSelector"
-                    ref="fileSelector"
-                    type="file"
-                    class="hidden"
-                    multiple="multiple"
-                    @change="importGroupsHandler"
-                />
-            </div>
-
-            <!-- export channel groups to json  -->
-            <button
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="exportGroupsHandler"
-                v-text="`${$t('actions.export_to_json')} (${$t('titles.channel_groups')})`"
-            />
-        </div>
-        <!-- subscriptions count, only shown if there are any  -->
-        <div v-if="subscriptions.length > 0" class="flex gap-1 self-center">
-            <i18n-t keypath="subscriptions.subscribed_channels_count">{{ subscriptions.length }}</i18n-t>
-        </div>
+    <div class="flex items-center gap-3 py-3">
+        <h1 v-t="'titles.subscriptions'" class="text-2xl font-bold text-yt-text" />
+        <span
+            v-if="subscriptions.length > 0"
+            class="text-sm text-yt-text-secondary"
+            v-text="`${subscriptions.length} channels`"
+        />
     </div>
-    <br />
-    <hr />
-    <div class="flex w-full flex-wrap">
+
+    <!-- Import / export action row -->
+    <div class="flex flex-wrap items-center gap-2 pb-3">
+        <router-link
+            v-t="'actions.import_from_json_csv'"
+            to="/import"
+            class="inline-flex h-9 items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+        />
+        <button
+            v-t="'actions.export_to_json'"
+            class="inline-flex h-9 items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            @click="exportHandler"
+        />
+        <label
+            for="fileSelector"
+            class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            v-text="`${$t('actions.import_from_json')} (${$t('titles.channel_groups')})`"
+        />
+        <input
+            id="fileSelector"
+            ref="fileSelector"
+            type="file"
+            class="hidden"
+            multiple="multiple"
+            @change="importGroupsHandler"
+        />
+        <button
+            class="inline-flex h-9 items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            @click="exportGroupsHandler"
+            v-text="`${$t('actions.export_to_json')} (${$t('titles.channel_groups')})`"
+        />
+    </div>
+
+    <!-- Channel-group chips -->
+    <nav class="-mx-1 flex flex-wrap gap-2 border-y border-yt-border bg-yt-bg px-1 py-3">
         <button
             v-for="group in channelGroups"
             :key="group.groupName"
-            class="mx-1 inline-block w-max cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            :class="{ 'border-2 border-red-500': selectedGroup === group }"
+            class="inline-flex h-8 shrink-0 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors"
+            :class="
+                selectedGroup === group
+                    ? 'border-transparent bg-yt-text text-yt-bg'
+                    : 'border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+            "
             @click="selectGroup(group)"
         >
             <span v-text="group.groupName !== '' ? group.groupName : $t('video.all')" />
-            <div v-if="group.groupName != '' && selectedGroup == group">
-                <i-fa6-solid-pen class="mx-2" @click="showEditGroupModal = true" />
-                <i-fa6-solid-circle-minus class="mx-2" @click="groupToDelete = group.groupName" />
-            </div>
+            <template v-if="group.groupName != '' && selectedGroup == group">
+                <i-fa6-solid-pen class="ml-1 cursor-pointer" @click.stop="showEditGroupModal = true" />
+                <i-fa6-solid-circle-minus class="cursor-pointer" @click.stop="groupToDelete = group.groupName" />
+            </template>
         </button>
         <ConfirmModal
             v-if="groupToDelete != null"
@@ -69,35 +66,37 @@
             @confirm="deleteGroup(groupToDelete)"
         />
         <button
-            class="mx-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+            class="grid size-8 place-items-center rounded-full bg-yt-surface text-yt-text hover:bg-yt-surface-hover"
+            :title="$t('actions.create_playlist')"
             @click="showCreateGroupModal = true"
         >
             <i-fa6-solid-circle-plus />
         </button>
-    </div>
-    <br />
-    <hr />
-    <!-- Subscriptions card list -->
-    <div class="max-md:flex-wrap xl:grid xl:grid-cols-5">
-        <!-- channel info card -->
+    </nav>
+
+    <!-- Channel cards grid -->
+    <div class="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <div
             v-for="subscription in filteredSubscriptions"
             :key="subscription.url"
-            class="m-2 rounded-lg border border-gray-500 p-1"
+            class="flex flex-col items-center rounded-2xl bg-yt-surface p-4 text-center"
         >
-            <router-link :to="subscription.url" class="flex p-2 text-4xl font-bold">
-                <img :src="subscription.avatar" class="h-fit rounded-full" width="48" height="48" />
-                <span class="mx-2 self-center" v-text="subscription.name" />
+            <router-link :to="subscription.url" class="flex flex-col items-center">
+                <img :src="subscription.avatar" class="size-20 rounded-full" width="80" height="80" />
+                <span class="mt-3 line-clamp-2 text-sm font-medium text-yt-text" v-text="subscription.name" />
             </router-link>
-            <!-- subscribe / unsubscribe btn -->
             <button
                 v-t="`actions.${subscription.subscribed ? 'unsubscribe' : 'subscribe'}`"
-                class="mt-2 inline-block w-full cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                class="mt-3 cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition-colors"
+                :class="
+                    subscription.subscribed
+                        ? 'bg-yt-bg text-yt-text hover:bg-yt-surface-hover'
+                        : 'bg-yt-text text-yt-bg hover:bg-yt-text-secondary'
+                "
                 @click="handleButton(subscription)"
             />
         </div>
     </div>
-    <br />
 
     <CreateGroupModal
         v-if="showCreateGroupModal"

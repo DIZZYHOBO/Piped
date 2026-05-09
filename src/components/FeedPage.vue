@@ -1,67 +1,71 @@
 <template>
-    <h1 v-t="'titles.feed'" class="my-4 text-center font-bold" />
-
-    <div class="flex flex-col flex-wrap gap-2 *:flex *:items-center *:gap-1 md:flex-row md:items-center">
-        <span>
-            <label for="filters">
-                <strong v-text="`${$t('actions.filter')}:`" />
-            </label>
-            <select
-                id="filters"
-                v-model="selectedFilter"
-                default="all"
-                class="h-8 grow rounded-md bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
-                @change="onFilterChange()"
+    <div class="flex items-center gap-3 pt-3 pb-2">
+        <h1 v-t="'titles.feed'" class="text-2xl font-bold text-yt-text" />
+        <span class="ml-auto flex items-center gap-2">
+            <router-link
+                to="/subscriptions"
+                class="inline-flex h-9 items-center gap-1.5 rounded-full bg-yt-surface px-3 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
             >
-                <option v-for="filter in availableFilters" :key="filter" v-t="`video.${filter}`" :value="filter" />
-            </select>
-        </span>
-
-        <span>
-            <label for="group-selector">
-                <strong v-text="`${$t('titles.channel_groups')}:`" />
-            </label>
-            <select
-                id="group-selector"
-                v-model="selectedGroupName"
-                default=""
-                class="h-8 grow rounded-md bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+                <i-fa6-solid-users />
+                <span v-t="'titles.subscriptions'" />
+            </router-link>
+            <a
+                :href="getRssUrl"
+                class="inline-flex size-9 items-center justify-center rounded-full bg-yt-surface text-yt-text hover:bg-yt-surface-hover"
+                :aria-label="$t('actions.rss_feed')"
             >
-                <option v-t="`video.all`" value="" />
-                <option
-                    v-for="group in channelGroups"
-                    :key="group.groupName"
-                    :value="group.groupName"
-                    v-text="group.groupName"
-                />
-            </select>
-        </span>
-
-        <span class="md:ml-auto">
+                <i-fa6-solid-rss />
+            </a>
             <SortingSelector by-key="uploaded" @apply="order => videos.sort(order)" />
         </span>
     </div>
-    <hr />
 
-    <span class="flex gap-2">
-        <router-link
-            v-t="'titles.subscriptions'"
-            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            to="/subscriptions"
+    <!-- Filter chips: type filter + channel groups -->
+    <nav class="sticky top-(--topbar-h) z-20 -mx-1 scrollbar-hidden flex gap-2 overflow-x-auto bg-yt-bg px-1 py-3">
+        <button
+            v-for="filter in availableFilters"
+            :key="filter"
+            v-t="`video.${filter}`"
+            class="shrink-0 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
+            :class="
+                selectedFilter === filter
+                    ? 'border-transparent bg-yt-text text-yt-bg'
+                    : 'border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+            "
+            @click="
+                selectedFilter = filter;
+                onFilterChange();
+            "
         />
-        <a
-            :href="getRssUrl"
-            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            :aria-label="$t('actions.rss_feed')"
+        <span v-if="channelGroups.length" class="mx-1 self-center text-yt-text-secondary">·</span>
+        <button
+            class="shrink-0 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
+            :class="
+                selectedGroupName === ''
+                    ? 'border-transparent bg-yt-text text-yt-bg'
+                    : 'border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+            "
+            @click="selectedGroupName = ''"
         >
-            <i-fa6-solid-rss />
-        </a>
-    </span>
-    <hr />
+            <span v-t="'video.all'" />
+        </button>
+        <button
+            v-for="group in channelGroups"
+            :key="group.groupName"
+            class="shrink-0 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
+            :class="
+                selectedGroupName === group.groupName
+                    ? 'border-transparent bg-yt-text text-yt-bg'
+                    : 'border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+            "
+            @click="selectedGroupName = group.groupName"
+            v-text="group.groupName"
+        />
+    </nav>
 
     <LoadingIndicatorPage
         :show-content="videosStore != null"
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
+        class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
     >
         <template v-for="video in filteredVideos" :key="video.url">
             <VideoItem v-if="shouldShowVideo(video)" :is-feed="true" :item="video" @update:watched="onUpdateWatched" />

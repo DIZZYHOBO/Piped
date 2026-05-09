@@ -1,7 +1,7 @@
 <template>
-    <div v-if="showVideo" class="flex flex-col justify-between">
+    <div v-if="showVideo" class="flex flex-col">
         <router-link
-            class="inline-block w-full hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
+            class="block"
             :to="{
                 path: '/watch',
                 query: {
@@ -12,33 +12,39 @@
                 },
             }"
         >
-            <VideoThumbnail :item="item" />
-
-            <div>
-                <p
-                    class="line-clamp-2 pt-2 leading-tight font-bold hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
-                    :title="title"
-                    v-text="title"
-                />
-            </div>
+            <VideoThumbnail :item="item" class="overflow-hidden rounded-xl" />
         </router-link>
 
-        <div class="flex items-start pt-1">
-            <router-link :to="item.uploaderUrl">
+        <div class="mt-3 flex gap-3">
+            <router-link v-if="item.uploaderUrl" :to="item.uploaderUrl" class="shrink-0">
                 <img
                     v-if="item.uploaderAvatar"
                     loading="lazy"
                     :src="item.uploaderAvatar"
-                    class="mt-0.5 mr-0.5 size-8 shrink-0 rounded-full"
-                    width="68"
-                    height="68"
+                    class="size-9 rounded-full"
+                    width="36"
+                    height="36"
                 />
             </router-link>
 
-            <div class="min-w-0 flex-1 px-2">
+            <div class="min-w-0 flex-1">
+                <router-link
+                    :to="{
+                        path: '/watch',
+                        query: {
+                            v: item.url.substr(-11),
+                            ...(playlistId && { list: playlistId }),
+                            ...(index >= 0 && { index: index + 1 }),
+                            ...(preferListen && { listen: 1 }),
+                        },
+                    }"
+                >
+                    <p class="line-clamp-2 text-sm/snug font-medium text-yt-text" :title="title" v-text="title" />
+                </router-link>
+
                 <router-link
                     v-if="item.uploaderUrl && item.uploaderName && !hideChannel"
-                    class="inline-flex max-w-full items-center gap-1 text-sm/tight underline decoration-dark-400 hover:text-dark-400 focus:text-dark-400 dark:text-gray-300 dark:decoration-dark-100 dark:hover:text-gray-400 dark:hover:underline dark:hover:decoration-gray-400"
+                    class="mt-1.5 inline-flex max-w-full items-center gap-1 text-xs text-yt-text-secondary hover:text-yt-text"
                     :to="item.uploaderUrl"
                     :title="item.uploaderName"
                 >
@@ -46,14 +52,9 @@
                     <i-fa6-solid-check v-if="item.uploaderVerified" class="shrink-0" />
                 </router-link>
 
-                <div
-                    v-if="item.views >= 0 || item.uploadedDate"
-                    class="mt-1 flex flex-wrap items-center gap-x-1 text-xs font-normal text-gray-600 dark:text-gray-400"
-                >
-                    <span v-if="item.views >= 0" class="inline-flex items-center gap-1">
-                        <i-fa6-solid-eye class="shrink-0" />
-                        <span v-text="`${numberFormat(item.views)} •`" />
-                    </span>
+                <div v-if="item.views >= 0 || item.uploadedDate" class="text-xs text-yt-text-secondary">
+                    <span v-if="item.views >= 0" v-text="`${numberFormat(item.views)} views`" />
+                    <span v-if="item.views >= 0 && (item.uploaded > 0 || item.uploadedDate)" class="px-1">·</span>
                     <span
                         v-if="item.uploaded > 0"
                         :title="new Date(item.uploaded).toLocaleString()"
@@ -63,68 +64,94 @@
                 </div>
             </div>
 
-            <div class="ml-1 flex shrink-0 items-center gap-2.5 pt-0.5">
-                <router-link
-                    :to="{
-                        path: '/watch',
-                        query: {
-                            v: item.url.substr(-11),
-                            ...(playlistId && { list: playlistId }),
-                            ...(index >= 0 && { index: index + 1 }),
-                            ...(!preferListen && { listen: 1 }),
-                        },
-                    }"
-                    :aria-label="preferListen ? title : 'Listen to ' + title"
-                    :title="preferListen ? title : 'Listen to ' + title"
-                >
-                    <i-fa6-solid-tv v-if="preferListen" />
-                    <i-fa6-solid-headphones v-else />
-                </router-link>
-                <button :title="$t('actions.add_to_playlist')" @click="showPlaylistModal = !showPlaylistModal">
-                    <i-fa6-solid-circle-plus />
-                </button>
-                <button :title="$t('actions.share')" @click="showShareModal = !showShareModal">
-                    <i-fa6-solid-share />
-                </button>
+            <div class="flex shrink-0 items-start">
                 <button
-                    v-if="admin"
-                    ref="removeButton"
-                    :title="$t('actions.remove_from_playlist')"
-                    @click="showConfirmRemove = true"
+                    class="grid size-8 place-items-center rounded-full text-yt-text-secondary hover:bg-yt-surface hover:text-yt-text"
+                    :title="$t('actions.share')"
+                    @click="showActions = !showActions"
                 >
-                    <i-fa6-solid-circle-minus />
+                    <i-fa6-solid-ellipsis-vertical />
                 </button>
-                <button
-                    v-if="showMarkOnWatched && isFeed"
-                    ref="watchButton"
-                    @click="toggleWatched(item.url.substr(-11))"
-                >
-                    <i-fa6-solid-eye-slash
-                        v-if="item.watched && item.currentTime > item.duration * 0.9"
-                        :title="$t('actions.mark_as_unwatched')"
-                    />
-                    <i-fa6-solid-eye v-else :title="$t('actions.mark_as_watched')" />
-                </button>
-                <ConfirmModal
-                    v-if="showConfirmRemove"
-                    :message="$t('actions.delete_playlist_video_confirm')"
-                    @close="showConfirmRemove = false"
-                    @confirm="removeVideo(item.url.substr(-11))"
-                />
-                <PlaylistAddModal
-                    v-if="showPlaylistModal"
-                    :video-id="item.url.substr(-11)"
-                    :video-info="item"
-                    @close="showPlaylistModal = false"
-                />
-                <ShareModal
-                    v-if="showShareModal"
-                    :video-id="item.url.substr(-11)"
-                    :current-time="0"
-                    @close="showShareModal = false"
-                />
             </div>
         </div>
+
+        <!-- Inline action row (revealed on demand) -->
+        <div
+            v-if="showActions"
+            class="mt-2 flex flex-wrap items-center gap-1 border-t border-yt-border pt-2 text-yt-text-secondary"
+        >
+            <router-link
+                :to="{
+                    path: '/watch',
+                    query: {
+                        v: item.url.substr(-11),
+                        ...(playlistId && { list: playlistId }),
+                        ...(index >= 0 && { index: index + 1 }),
+                        ...(!preferListen && { listen: 1 }),
+                    },
+                }"
+                class="grid size-8 place-items-center rounded-full hover:bg-yt-surface hover:text-yt-text"
+                :aria-label="preferListen ? title : 'Listen to ' + title"
+                :title="preferListen ? title : 'Listen to ' + title"
+            >
+                <i-fa6-solid-tv v-if="preferListen" />
+                <i-fa6-solid-headphones v-else />
+            </router-link>
+            <button
+                class="grid size-8 place-items-center rounded-full hover:bg-yt-surface hover:text-yt-text"
+                :title="$t('actions.add_to_playlist')"
+                @click="showPlaylistModal = !showPlaylistModal"
+            >
+                <i-fa6-solid-circle-plus />
+            </button>
+            <button
+                class="grid size-8 place-items-center rounded-full hover:bg-yt-surface hover:text-yt-text"
+                :title="$t('actions.share')"
+                @click="showShareModal = !showShareModal"
+            >
+                <i-fa6-solid-share />
+            </button>
+            <button
+                v-if="admin"
+                ref="removeButton"
+                class="grid size-8 place-items-center rounded-full hover:bg-yt-surface hover:text-yt-text"
+                :title="$t('actions.remove_from_playlist')"
+                @click="showConfirmRemove = true"
+            >
+                <i-fa6-solid-circle-minus />
+            </button>
+            <button
+                v-if="showMarkOnWatched && isFeed"
+                ref="watchButton"
+                class="grid size-8 place-items-center rounded-full hover:bg-yt-surface hover:text-yt-text"
+                @click="toggleWatched(item.url.substr(-11))"
+            >
+                <i-fa6-solid-eye-slash
+                    v-if="item.watched && item.currentTime > item.duration * 0.9"
+                    :title="$t('actions.mark_as_unwatched')"
+                />
+                <i-fa6-solid-eye v-else :title="$t('actions.mark_as_watched')" />
+            </button>
+        </div>
+
+        <ConfirmModal
+            v-if="showConfirmRemove"
+            :message="$t('actions.delete_playlist_video_confirm')"
+            @close="showConfirmRemove = false"
+            @confirm="removeVideo(item.url.substr(-11))"
+        />
+        <PlaylistAddModal
+            v-if="showPlaylistModal"
+            :video-id="item.url.substr(-11)"
+            :video-info="item"
+            @close="showPlaylistModal = false"
+        />
+        <ShareModal
+            v-if="showShareModal"
+            :video-id="item.url.substr(-11)"
+            :current-time="0"
+            @close="showShareModal = false"
+        />
     </div>
 </template>
 
@@ -166,6 +193,7 @@ const showShareModal = ref(false);
 const showVideo = ref(true);
 const showConfirmRemove = ref(false);
 const showMarkOnWatched = ref(false);
+const showActions = ref(false);
 
 const title = computed(() => {
     return props.item.dearrow?.titles[0]?.title ?? props.item.title;
