@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Trending · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+        <style>
+            .trending-hero {
+                position: relative;
+                border-radius: 16px;
+                overflow: hidden;
+                background: linear-gradient(135deg, #4a148c, #c00 65%, #ff8a00);
+                aspect-ratio: 21 / 9;
+                margin: 16px 0;
+                display: flex;
+                align-items: flex-end;
+                padding: 28px;
+                color: #fff;
+            }
+            .trending-hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7));
+            }
+            .trending-hero__inner {
+                position: relative;
+                z-index: 1;
+                max-width: 720px;
+            }
+            .trending-hero__pill {
+                display: inline-flex;
+                gap: 6px;
+                align-items: center;
+                background: var(--brand-red);
+                color: #fff;
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 12px;
+            }
+            .trending-hero h1 {
+                font-size: 32px;
+                margin: 0 0 6px;
+                line-height: 1.15;
+                letter-spacing: -0.5px;
+            }
+            .trending-hero p {
+                margin: 0 0 12px;
+                opacity: 0.9;
+                font-size: 14px;
+            }
+            .trending-hero__actions {
+                display: flex;
+                gap: 8px;
+            }
+            .trending-rank {
+                position: absolute;
+                left: 8px;
+                top: 8px;
+                background: rgba(0, 0, 0, 0.85);
+                color: #fff;
+                font-weight: 700;
+                font-size: 16px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .country-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--surface);
+                border-radius: 18px;
+                padding: 6px 12px;
+                font-size: 13px;
+                color: var(--text);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Trending · region picker, category tabs, hero spotlight</span>
+        </div>
+
+        <div class="app" data-active="trending">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main class="content">
+                    <div class="row" style="padding: 12px 0">
+                        <div class="row">
+                            <span class="material-symbols-outlined" style="color: var(--brand-red); font-size: 28px"
+                                >local_fire_department</span
+                            >
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0">Trending</h1>
+                        </div>
+                        <span class="spacer"></span>
+                        <span class="country-pill">
+                            <span class="material-symbols-outlined" style="font-size: 18px">public</span>
+                            United States
+                            <span class="material-symbols-outlined" style="font-size: 18px">expand_more</span>
+                        </span>
+                    </div>
+
+                    <nav class="chips">
+                        <button class="chip is-active">
+                            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px"
+                                >local_fire_department</span
+                            >
+                            Now
+                        </button>
+                        <button class="chip">
+                            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px">music_note</span>
+                            Music
+                        </button>
+                        <button class="chip">
+                            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px">stadia_controller</span>
+                            Gaming
+                        </button>
+                        <button class="chip">
+                            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px">movie</span>
+                            Movies
+                        </button>
+                        <button class="chip">News</button>
+                        <button class="chip">Sports</button>
+                        <button class="chip">Podcasts</button>
+                    </nav>
+
+                    <section class="trending-hero">
+                        <div class="trending-hero__inner">
+                            <span class="trending-hero__pill">
+                                <span class="material-symbols-outlined" style="font-size: 14px">trending_up</span>
+                                #1 trending now
+                            </span>
+                            <h1>The new Mars rover footage that broke the internet</h1>
+                            <p>Smarter Every Day · 18M views · Posted 2 days ago</p>
+                            <div class="trending-hero__actions">
+                                <a href="watch.html" class="btn btn--red">
+                                    <span class="material-symbols-outlined" style="font-size: 18px">play_arrow</span>
+                                    Watch now
+                                </a>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined" style="font-size: 18px">bookmark_add</span>
+                                    Save
+                                </button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined" style="font-size: 18px">share</span>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="grid grid--wide">
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                <span class="trending-rank">2</span>
+                                <span class="thumb__duration">12:48</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #cc1d1d">LT</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Why everyone is switching to this $40 mini PC</a></h3>
+                                    <a class="card__channel" href="channel.html">Linus Tech Tips</a>
+                                    <div class="card__sub">2.1M views<span class="dot">·</span>3 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#222,#444 60%,#666)"></div>
+                                <span class="trending-rank">3</span>
+                                <span class="thumb__duration">15:03</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #222">M</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">iPhone 17 Pro Review: The compromise generation</a></h3>
+                                    <a class="card__channel" href="channel.html">MKBHD</a>
+                                    <div class="card__sub">3.8M views<span class="dot">·</span>1 week ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                <span class="trending-rank">4</span>
+                                <span class="thumb__duration">22:14</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #1976d2">V</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">The map of mathematics — where every field connects</a></h3>
+                                    <a class="card__channel" href="channel.html">Veritasium</a>
+                                    <div class="card__sub">5.4M views<span class="dot">·</span>1 month ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#ee0979,#ff6a00 60%,#ffd200)"></div>
+                                <span class="trending-rank">5</span>
+                                <span class="thumb__live">Live</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #388e3c">TS</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Live: SpaceX Starship Flight Test 12</a></h3>
+                                    <a class="card__channel" href="channel.html">Tom Scott Live</a>
+                                    <div class="card__sub">42K watching now</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#00b4db 70%,#001f3f)"></div>
+                                <span class="trending-rank">6</span>
+                                <span class="thumb__duration">8:21</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #ff6a00">F</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Bun is killing Node.js (here's the proof)</a></h3>
+                                    <a class="card__channel" href="channel.html">Fireship</a>
+                                    <div class="card__sub">847K views<span class="dot">·</span>2 weeks ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#00838f,#26c6da)"></div>
+                                <span class="trending-rank">7</span>
+                                <span class="thumb__duration">11:32</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #00838f">K</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">What if antimatter fell up? A new experiment</a></h3>
+                                    <a class="card__channel" href="channel.html">Kurzgesagt – In a Nutshell</a>
+                                    <div class="card__sub">8.2M views<span class="dot">·</span>2 months ago</div>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+    </body>
+</html>

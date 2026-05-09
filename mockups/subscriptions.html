@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Subscriptions · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+        <style>
+            .sub-rail {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 88px;
+                gap: 16px;
+                overflow-x: auto;
+                padding: 16px 0 8px;
+                scrollbar-width: none;
+            }
+            .sub-rail::-webkit-scrollbar {
+                display: none;
+            }
+            .sub-rail__item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--text);
+                text-align: center;
+                line-height: 1.2;
+            }
+            .sub-rail__item .avatar {
+                width: 64px;
+                height: 64px;
+                font-size: 22px;
+                position: relative;
+            }
+            .sub-rail__item.has-new .avatar::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 4px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: var(--brand-red);
+                border: 2px solid var(--bg);
+            }
+            .view-toggle {
+                display: inline-flex;
+                gap: 4px;
+                background: var(--surface);
+                border-radius: 18px;
+                padding: 2px;
+            }
+            .view-toggle button {
+                border: 0;
+                background: transparent;
+                color: var(--text);
+                font-size: 13px;
+                padding: 6px 12px;
+                border-radius: 16px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .view-toggle button.is-active {
+                background: var(--bg);
+            }
+            .day-header {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 24px 0 12px;
+                color: var(--text);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Subscriptions · channel rail + grouped uploads</span>
+        </div>
+
+        <div class="app" data-active="subs">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main class="content">
+                    <section>
+                        <h1 style="font-size: 24px; font-weight: 600; margin: 12px 0 0">Subscriptions</h1>
+                        <div class="sub-rail">
+                            <a class="sub-rail__item has-new" href="channel.html">
+                                <span class="avatar" style="background: #cc1d1d">LT</span>
+                                <span>Linus Tech Tips</span>
+                            </a>
+                            <a class="sub-rail__item has-new" href="channel.html">
+                                <span class="avatar" style="background: #ff6a00">F</span>
+                                <span>Fireship</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #1976d2">V</span>
+                                <span>Veritasium</span>
+                            </a>
+                            <a class="sub-rail__item has-new" href="channel.html">
+                                <span class="avatar" style="background: #222">M</span>
+                                <span>MKBHD</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #00838f">K</span>
+                                <span>Kurzgesagt</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #388e3c">TS</span>
+                                <span>Tom Scott</span>
+                            </a>
+                            <a class="sub-rail__item has-new" href="channel.html">
+                                <span class="avatar" style="background: #6d4c41">DC</span>
+                                <span>Daily Coding</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #ad1457">PB</span>
+                                <span>Practical Bytes</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #2e7d32">GD</span>
+                                <span>GDevelop</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #455a64">SE</span>
+                                <span>Smarter Every</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #4527a0">NL</span>
+                                <span>Numberphile</span>
+                            </a>
+                            <a class="sub-rail__item" href="channel.html">
+                                <span class="avatar" style="background: #c2185b">RB</span>
+                                <span>Real Engineer</span>
+                            </a>
+                        </div>
+
+                        <div class="row" style="margin: 16px 0 0">
+                            <div class="view-toggle">
+                                <button class="is-active">
+                                    <span class="material-symbols-outlined" style="font-size: 18px">grid_view</span>
+                                    Grid
+                                </button>
+                                <button>
+                                    <span class="material-symbols-outlined" style="font-size: 18px">view_list</span>
+                                    List
+                                </button>
+                            </div>
+                            <span class="spacer"></span>
+                            <button class="btn btn--sm">
+                                <span class="material-symbols-outlined" style="font-size: 18px">manage_accounts</span>
+                                Manage
+                            </button>
+                        </div>
+                    </section>
+
+                    <h3 class="day-header">Today</h3>
+                    <section class="grid grid--wide">
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                <span class="thumb__duration">12:48</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #cc1d1d">LT</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Why everyone is switching to this $40 mini PC</a></h3>
+                                    <a class="card__channel" href="channel.html">Linus Tech Tips</a>
+                                    <div class="card__sub">2.1M views<span class="dot">·</span>4 hours ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#00b4db 70%,#001f3f)"></div>
+                                <span class="thumb__duration">8:21</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #ff6a00">F</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Bun is killing Node.js (here's the proof)</a></h3>
+                                    <a class="card__channel" href="channel.html">Fireship</a>
+                                    <div class="card__sub">847K views<span class="dot">·</span>9 hours ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#222,#444 60%,#666)"></div>
+                                <span class="thumb__duration">15:03</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #222">M</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">iPhone 17 Pro Review: The compromise generation</a></h3>
+                                    <a class="card__channel" href="channel.html">MKBHD</a>
+                                    <div class="card__sub">3.8M views<span class="dot">·</span>14 hours ago</div>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+
+                    <h3 class="day-header">Yesterday</h3>
+                    <section class="grid grid--wide">
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                <span class="thumb__duration">22:14</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #1976d2">V</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">The map of mathematics — where every field connects</a></h3>
+                                    <a class="card__channel" href="channel.html">Veritasium</a>
+                                    <div class="card__sub">5.4M views<span class="dot">·</span>1 day ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#00838f,#0097a7,#26c6da)"></div>
+                                <span class="thumb__duration">11:32</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #00838f">K</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">What if antimatter fell up? A new experiment</a></h3>
+                                    <a class="card__channel" href="channel.html">Kurzgesagt – In a Nutshell</a>
+                                    <div class="card__sub">8.2M views<span class="dot">·</span>1 day ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#1d4044,#0e7c64)"></div>
+                                <span class="thumb__duration">7:19</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #ff6a00">F</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Vite 7 in 100 seconds</a></h3>
+                                    <a class="card__channel" href="channel.html">Fireship</a>
+                                    <div class="card__sub">412K views<span class="dot">·</span>1 day ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#ee0979,#ff6a00 60%,#ffd200)"></div>
+                                <span class="thumb__live">Live</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #388e3c">TS</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Tom Scott Live: Q&amp;A from the lighthouse</a></h3>
+                                    <a class="card__channel" href="channel.html">Tom Scott Live</a>
+                                    <div class="card__sub">42K watching now</div>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+
+                    <h3 class="day-header">This week</h3>
+                    <section class="grid grid--wide">
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#4a148c,#c00)"></div>
+                                <span class="thumb__duration">31:09</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #cc1d1d">LT</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">We rebuilt the LTT studio — here's what failed first</a></h3>
+                                    <a class="card__channel" href="channel.html">Linus Tech Tips</a>
+                                    <div class="card__sub">1.2M views<span class="dot">·</span>3 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#ff7e5f,#feb47b)"></div>
+                                <span class="thumb__duration">19:42</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #1976d2">V</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">The hidden cost of cheap solar panels</a></h3>
+                                    <a class="card__channel" href="channel.html">Veritasium</a>
+                                    <div class="card__sub">2.0M views<span class="dot">·</span>5 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#222,#3d3d3d)"></div>
+                                <span class="thumb__duration">9:01</span>
+                            </a>
+                            <div class="card__meta">
+                                <span class="avatar" style="background: #222">M</span>
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">My current desk setup — late 2026 edition</a></h3>
+                                    <a class="card__channel" href="channel.html">MKBHD</a>
+                                    <div class="card__sub">1.5M views<span class="dot">·</span>6 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+    </body>
+</html>

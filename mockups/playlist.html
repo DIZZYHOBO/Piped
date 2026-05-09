@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Web dev deep dives · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Playlist · sticky hero panel + ordered video list (YT 2025 layout)</span>
+        </div>
+
+        <div class="app" data-active="playlists">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main class="content">
+                    <div class="playlist-page">
+                        <aside class="playlist-hero">
+                            <div class="playlist-hero__cover">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                            </div>
+                            <h2>Web dev deep dives</h2>
+                            <div class="playlist-hero__meta">
+                                42 videos · 11 hours · curated by you
+                            </div>
+                            <p style="font-size: 13px; opacity: 0.85; margin: 0 0 8px">
+                                The handful of videos that explain how the web actually works. Refreshed quarterly.
+                            </p>
+                            <div class="row" style="gap: 6px; font-size: 12px; opacity: 0.85">
+                                <span class="material-symbols-outlined" style="font-size: 16px">lock</span>
+                                Private
+                                <span style="margin: 0 4px">·</span>
+                                Updated 2 days ago
+                            </div>
+                            <div class="playlist-hero__actions">
+                                <a href="watch.html" class="btn btn--primary" style="background: #fff; color: #000">
+                                    <span class="material-symbols-outlined">play_arrow</span>
+                                    Play all
+                                </a>
+                                <button class="btn" style="background: rgba(255,255,255,0.18); color: #fff">
+                                    <span class="material-symbols-outlined">shuffle</span>
+                                    Shuffle
+                                </button>
+                                <button class="icon-btn" style="color: #fff">
+                                    <span class="material-symbols-outlined">share</span>
+                                </button>
+                                <button class="icon-btn" style="color: #fff">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                            </div>
+                        </aside>
+
+                        <section>
+                            <div class="row" style="margin-bottom: 8px">
+                                <h3 style="margin: 0; font-size: 18px; font-weight: 600">Videos</h3>
+                                <span class="spacer"></span>
+                                <span class="row" style="gap: 6px; font-size: 13px" class="muted">
+                                    <span class="material-symbols-outlined" style="font-size: 18px">sort</span>
+                                    Sort
+                                </span>
+                            </div>
+
+                            <div class="playlist-list">
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">1</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#001f3f)"></div>
+                                        <span class="thumb__duration">8:21</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">Bun is killing Node.js (here's the proof)</h4>
+                                        <div class="playlist-row__meta">Fireship · 847K views · 2 weeks ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">2</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#1d4044,#0e7c64)"></div>
+                                        <span class="thumb__duration">7:19</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">Vite 7 in 100 seconds</h4>
+                                        <div class="playlist-row__meta">Fireship · 412K views · 4 days ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">3</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                        <span class="thumb__duration">22:14</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">The map of mathematics — where every field connects</h4>
+                                        <div class="playlist-row__meta">Veritasium · 5.4M views · 1 month ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">4</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                        <span class="thumb__duration">12:48</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">Why everyone is switching to this $40 mini PC</h4>
+                                        <div class="playlist-row__meta">Linus Tech Tips · 2.1M views · 3 days ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">5</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#222,#666)"></div>
+                                        <span class="thumb__duration">9:42</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">The CES 2026 floor — only the actually weird stuff</h4>
+                                        <div class="playlist-row__meta">Linus Tech Tips · 1.7M views · 1 week ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">6</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#00838f,#26c6da)"></div>
+                                        <span class="thumb__duration">11:32</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">What if antimatter fell up? A new experiment</h4>
+                                        <div class="playlist-row__meta">Kurzgesagt – In a Nutshell · 8.2M views · 2 months ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">7</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#ff7e5f,#feb47b)"></div>
+                                        <span class="thumb__duration">19:42</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">The hidden cost of cheap solar panels</h4>
+                                        <div class="playlist-row__meta">Veritasium · 2.0M views · 3 weeks ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                                <a class="playlist-row" href="watch.html">
+                                    <span class="playlist-row__num">8</span>
+                                    <div class="playlist-row__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#4a148c,#c00)"></div>
+                                        <span class="thumb__duration">31:09</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="playlist-row__title">We rebuilt the LTT studio — here's what failed first</h4>
+                                        <div class="playlist-row__meta">Linus Tech Tips · 1.2M views · 5 days ago</div>
+                                    </div>
+                                    <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+    </body>
+</html>

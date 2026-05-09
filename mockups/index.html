@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Piped Redesign · Mockup Tour</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+        <style>
+            .tour-card[data-bg="home"] .tour-card__preview {
+                background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2a2a2a 100%),
+                    radial-gradient(circle at 30% 20%, rgba(255, 0, 0, 0.25), transparent 60%);
+            }
+            .tour-card[data-bg="watch"] .tour-card__preview {
+                background: linear-gradient(135deg, #1a0033, #4a148c, #c00);
+            }
+            .tour-card[data-bg="trending"] .tour-card__preview {
+                background: linear-gradient(135deg, #ff7e5f, #feb47b, #c00);
+            }
+            .tour-card[data-bg="subs"] .tour-card__preview {
+                background: linear-gradient(135deg, #00b4db, #0083b0);
+            }
+            .tour-card[data-bg="channel"] .tour-card__preview {
+                background: linear-gradient(135deg, #ee0979, #ff6a00);
+            }
+            .tour-card[data-bg="search"] .tour-card__preview {
+                background: linear-gradient(135deg, #283c86, #45a247);
+            }
+            .tour-card[data-bg="library"] .tour-card__preview {
+                background: linear-gradient(135deg, #f7971e, #ffd200);
+            }
+            .tour-card[data-bg="playlist"] .tour-card__preview {
+                background: linear-gradient(135deg, #5a1ad6, #2a0a6b);
+            }
+            .key-box {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 12px;
+                margin: 24px 0 32px;
+            }
+            .key {
+                background: var(--surface);
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+            .key strong {
+                color: var(--text);
+                display: block;
+                margin-bottom: 4px;
+            }
+            .swatch {
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border-radius: 4px;
+                vertical-align: -2px;
+                margin-right: 6px;
+                border: 1px solid var(--border);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <span class="row">
+                <span class="material-symbols-outlined" style="font-size: 18px">palette</span>
+                Piped redesign mockups
+            </span>
+            <span class="mockup-banner__spacer"></span>
+            <span class="muted">Theme</span>
+            <div class="toggle-group">
+                <button data-theme-btn="dark">Dark</button>
+                <button data-theme-btn="light">Light</button>
+            </div>
+        </div>
+
+        <main class="tour">
+            <h1>Piped × YouTube 2025-26</h1>
+            <p class="tour__sub">
+                Static visual mockups showing how the Piped frontend would feel after adopting the current YouTube layout
+                language. Dark theme is default; toggle the switch above to preview light. Open any tile to see the full
+                page.
+            </p>
+
+            <div class="key-box">
+                <div class="key">
+                    <strong>Primary accent</strong>
+                    <span class="swatch" style="background: #ff0000"></span>YouTube red <code>#FF0000</code>
+                </div>
+                <div class="key">
+                    <strong>Surfaces (dark)</strong>
+                    <span class="swatch" style="background: #0f0f0f"></span>BG <code>#0F0F0F</code><br />
+                    <span class="swatch" style="background: #272727"></span>Surface <code>#272727</code>
+                </div>
+                <div class="key">
+                    <strong>Sidebar</strong>
+                    Collapsible YT-style: 240px expanded ↔ 72px rail
+                </div>
+                <div class="key">
+                    <strong>Watch page</strong>
+                    Two-column: player + recs rail
+                </div>
+                <div class="key">
+                    <strong>Shorts</strong>
+                    Dedicated shelf on Home & Subscriptions
+                </div>
+                <div class="key">
+                    <strong>Density</strong>
+                    Comfortable — 340px thumbs, 12px radius
+                </div>
+            </div>
+
+            <div class="tour__grid">
+                <a href="home.html" class="tour-card" data-bg="home">
+                    <div class="tour-card__preview"></div>
+                    <h3>Home</h3>
+                    <p>Filter chips, recommended grid, and a Shorts shelf.</p>
+                </a>
+                <a href="trending.html" class="tour-card" data-bg="trending">
+                    <div class="tour-card__preview"></div>
+                    <h3>Trending</h3>
+                    <p>Region picker, tabbed categories, hero spotlight.</p>
+                </a>
+                <a href="subscriptions.html" class="tour-card" data-bg="subs">
+                    <div class="tour-card__preview"></div>
+                    <h3>Subscriptions</h3>
+                    <p>Channel rail at the top, latest uploads grid below.</p>
+                </a>
+                <a href="watch.html" class="tour-card" data-bg="watch">
+                    <div class="tour-card__preview"></div>
+                    <h3>Watch</h3>
+                    <p>Two-column: player + description + comments, recs rail.</p>
+                </a>
+                <a href="channel.html" class="tour-card" data-bg="channel">
+                    <div class="tour-card__preview"></div>
+                    <h3>Channel</h3>
+                    <p>Banner, identity row, tabs, featured + uploads grid.</p>
+                </a>
+                <a href="search.html" class="tour-card" data-bg="search">
+                    <div class="tour-card__preview"></div>
+                    <h3>Search</h3>
+                    <p>Filter bar, large thumbs, channel + playlist results.</p>
+                </a>
+                <a href="library.html" class="tour-card" data-bg="library">
+                    <div class="tour-card__preview"></div>
+                    <h3>Library</h3>
+                    <p>History row, watch later, playlists, downloads.</p>
+                </a>
+                <a href="playlist.html" class="tour-card" data-bg="playlist">
+                    <div class="tour-card__preview"></div>
+                    <h3>Playlist</h3>
+                    <p>Sticky hero panel + ordered video list.</p>
+                </a>
+            </div>
+        </main>
+
+        <script src="shell.js"></script>
+    </body>
+</html>
