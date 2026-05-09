@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Library · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+        <style>
+            .library {
+                max-width: 1280px;
+                margin: 0 auto;
+            }
+            .quick-rail {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 12px;
+                padding: 16px 0;
+            }
+            .quick-card {
+                background: var(--surface);
+                border-radius: 12px;
+                padding: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                border: 1px solid var(--border);
+            }
+            .quick-card .material-symbols-outlined {
+                color: var(--brand-red);
+                font-size: 22px;
+            }
+            .quick-card strong {
+                font-size: 15px;
+            }
+            .quick-card span.muted {
+                font-size: 12px;
+            }
+            .h-rail {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 280px;
+                gap: 12px;
+                overflow-x: auto;
+                padding: 8px 0;
+                scrollbar-width: none;
+            }
+            .h-rail::-webkit-scrollbar { display: none; }
+        </style>
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Library · history, watch later, playlists, downloads</span>
+        </div>
+
+        <div class="app" data-active="library">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main class="content">
+                    <div class="library">
+                        <h1 style="font-size: 28px; font-weight: 700; margin: 16px 0 0">Library</h1>
+
+                        <section class="quick-rail">
+                            <a class="quick-card" href="#history">
+                                <span class="material-symbols-outlined">history</span>
+                                <strong>History</strong>
+                                <span class="muted">Pick up where you left off</span>
+                            </a>
+                            <a class="quick-card" href="#watchlater">
+                                <span class="material-symbols-outlined">schedule</span>
+                                <strong>Watch later</strong>
+                                <span class="muted">28 videos saved</span>
+                            </a>
+                            <a class="quick-card" href="#liked">
+                                <span class="material-symbols-outlined">thumb_up</span>
+                                <strong>Liked videos</strong>
+                                <span class="muted">312 videos</span>
+                            </a>
+                            <a class="quick-card" href="#playlists">
+                                <span class="material-symbols-outlined">playlist_play</span>
+                                <strong>Playlists</strong>
+                                <span class="muted">7 playlists</span>
+                            </a>
+                            <a class="quick-card" href="#downloads">
+                                <span class="material-symbols-outlined">download</span>
+                                <strong>Downloads</strong>
+                                <span class="muted">Available offline</span>
+                            </a>
+                        </section>
+
+                        <!-- History -->
+                        <h3 id="history" class="section-title">
+                            History
+                            <a href="#">View all</a>
+                        </h3>
+                        <div>
+                            <div class="history-row">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                    <span class="thumb__duration">12:48</span>
+                                    <div class="thumb__progress" style="--progress: 66%"></div>
+                                </a>
+                                <div class="history-row__body">
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="watch.html">Why everyone is switching to this $40 mini PC</a></h3>
+                                    <div class="card__sub">Linus Tech Tips · 2.1M views · 3 days ago</div>
+                                    <p class="muted" style="font-size: 13px; margin: 8px 0 0">
+                                        Stopped at 8:25 / 12:48
+                                    </p>
+                                </div>
+                                <button class="icon-btn"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                            <div class="history-row">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#00b4db 70%,#001f3f)"></div>
+                                    <span class="thumb__duration">8:21</span>
+                                    <div class="thumb__progress" style="--progress: 100%"></div>
+                                </a>
+                                <div class="history-row__body">
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="watch.html">Bun is killing Node.js (here's the proof)</a></h3>
+                                    <div class="card__sub">Fireship · 847K views · 2 weeks ago</div>
+                                    <p class="muted" style="font-size: 13px; margin: 8px 0 0">Watched yesterday</p>
+                                </div>
+                                <button class="icon-btn"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                            <div class="history-row">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                    <span class="thumb__duration">22:14</span>
+                                    <div class="thumb__progress" style="--progress: 28%"></div>
+                                </a>
+                                <div class="history-row__body">
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="watch.html">The map of mathematics — where every field connects</a></h3>
+                                    <div class="card__sub">Veritasium · 5.4M views · 1 month ago</div>
+                                    <p class="muted" style="font-size: 13px; margin: 8px 0 0">Stopped at 6:15 / 22:14</p>
+                                </div>
+                                <button class="icon-btn"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                        </div>
+
+                        <!-- Watch later -->
+                        <h3 id="watchlater" class="section-title">
+                            Watch later
+                            <a href="#">View all</a>
+                        </h3>
+                        <div class="h-rail">
+                            <article class="card">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#222,#666)"></div>
+                                    <span class="thumb__duration">15:03</span>
+                                </a>
+                                <div class="card__meta"><div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">iPhone 17 Pro Review</a></h3>
+                                    <div class="card__sub">MKBHD</div>
+                                </div></div>
+                            </article>
+                            <article class="card">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#00838f,#26c6da)"></div>
+                                    <span class="thumb__duration">11:32</span>
+                                </a>
+                                <div class="card__meta"><div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">What if antimatter fell up?</a></h3>
+                                    <div class="card__sub">Kurzgesagt</div>
+                                </div></div>
+                            </article>
+                            <article class="card">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#ff7e5f,#feb47b)"></div>
+                                    <span class="thumb__duration">19:42</span>
+                                </a>
+                                <div class="card__meta"><div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">The hidden cost of cheap solar panels</a></h3>
+                                    <div class="card__sub">Veritasium</div>
+                                </div></div>
+                            </article>
+                            <article class="card">
+                                <a class="thumb" href="watch.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#1d4044,#0e7c64)"></div>
+                                    <span class="thumb__duration">7:19</span>
+                                </a>
+                                <div class="card__meta"><div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Vite 7 in 100 seconds</a></h3>
+                                    <div class="card__sub">Fireship</div>
+                                </div></div>
+                            </article>
+                        </div>
+
+                        <!-- Playlists -->
+                        <h3 id="playlists" class="section-title">
+                            Playlists
+                            <a href="#">View all</a>
+                        </h3>
+                        <section class="grid grid--wide">
+                            <article class="playlist-card">
+                                <a class="thumb" href="playlist.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#5a1ad6,#1a0033)"></div>
+                                </a>
+                                <div>
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="playlist.html">Web dev deep dives</a></h3>
+                                    <div class="card__sub">42 videos · last updated 2 days ago</div>
+                                </div>
+                            </article>
+                            <article class="playlist-card">
+                                <a class="thumb" href="playlist.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                </a>
+                                <div>
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="playlist.html">Math &amp; Physics — must-rewatch</a></h3>
+                                    <div class="card__sub">28 videos · last updated 1 week ago</div>
+                                </div>
+                            </article>
+                            <article class="playlist-card">
+                                <a class="thumb" href="playlist.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#ee0979,#ff6a00)"></div>
+                                </a>
+                                <div>
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="playlist.html">Background music while coding</a></h3>
+                                    <div class="card__sub">87 videos · last updated 3 weeks ago</div>
+                                </div>
+                            </article>
+                            <article class="playlist-card">
+                                <a class="thumb" href="playlist.html">
+                                    <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                </a>
+                                <div>
+                                    <h3 style="margin: 0 0 4px; font-size: 16px"><a href="playlist.html">LTT × Mini PCs</a></h3>
+                                    <div class="card__sub">50 videos · last updated last week</div>
+                                </div>
+                            </article>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+    </body>
+</html>

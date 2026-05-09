@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Linus Tech Tips · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Channel · banner, identity, tabs (Home / Videos / Shorts / Live / Playlists / About)</span>
+        </div>
+
+        <div class="app">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main class="content">
+                    <div class="channel-banner">
+                        <div style="position: absolute; inset: 0; background: radial-gradient(circle at 70% 40%, rgba(255,255,255,0.1), transparent 60%)"></div>
+                    </div>
+
+                    <header class="channel-header">
+                        <span class="avatar avatar--xl" style="background: #cc1d1d">LT</span>
+                        <div class="channel-meta">
+                            <h1>
+                                Linus Tech Tips
+                                <span class="material-symbols-outlined" style="font-size: 22px; color: var(--text-secondary); vertical-align: 0">verified</span>
+                            </h1>
+                            <div class="channel-meta__handle">@LinusTechTips · 15.8M subscribers · 6,142 videos</div>
+                            <p class="channel-meta__desc">
+                                Tech can be complicated; we try to make it easy. Linus Tech Tips is a passionate team of "professionally curious" experts in consumer technology and video production.
+                            </p>
+                            <div class="row" style="gap: 8px">
+                                <button class="btn btn--primary">Subscribe</button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">notifications_active</span>
+                                    All
+                                </button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">share</span>
+                                    Share
+                                </button>
+                                <button class="icon-btn"><span class="material-symbols-outlined">more_horiz</span></button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <nav class="tabs">
+                        <a class="tab is-active" href="#">Home</a>
+                        <a class="tab" href="#">Videos</a>
+                        <a class="tab" href="#">Shorts</a>
+                        <a class="tab" href="#">Live</a>
+                        <a class="tab" href="#">Playlists</a>
+                        <a class="tab" href="#">Community</a>
+                        <a class="tab" href="#">About</a>
+                        <span class="spacer"></span>
+                        <a class="tab" href="#"><span class="material-symbols-outlined" style="font-size: 18px">search</span></a>
+                    </nav>
+
+                    <!-- Featured / hero video for the channel -->
+                    <section style="display: grid; grid-template-columns: minmax(0, 720px) 1fr; gap: 24px; margin: 24px 0">
+                        <div>
+                            <div class="player" style="aspect-ratio: 16 / 9">
+                                <div class="player__poster" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                <div class="player__big-play"><span class="material-symbols-outlined">play_arrow</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="muted" style="font-size: 12px; margin-bottom: 6px">Featured video — Subscribers</div>
+                            <h2 style="margin: 0 0 8px; font-size: 20px">
+                                Why everyone is switching to this $40 mini PC
+                            </h2>
+                            <div class="card__sub" style="margin-bottom: 12px">2.1M views · 3 days ago</div>
+                            <p class="muted" style="font-size: 14px">
+                                We tested every "$40 mini PC" we could find and most of them are e-waste. But this one — surprisingly — isn't…
+                            </p>
+                            <div class="row" style="margin-top: 12px; gap: 8px">
+                                <a href="watch.html" class="btn btn--red">
+                                    <span class="material-symbols-outlined">play_arrow</span>
+                                    Watch now
+                                </a>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">playlist_add</span>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <h3 class="section-title">
+                        Latest videos
+                        <a href="#">View all</a>
+                    </h3>
+                    <section class="grid grid--wide">
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#4a148c,#c00)"></div>
+                                <span class="thumb__duration">31:09</span>
+                            </a>
+                            <div class="card__meta">
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">We rebuilt the LTT studio — here's what failed first</a></h3>
+                                    <div class="card__sub">1.2M views · 5 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                <span class="thumb__duration">12:48</span>
+                            </a>
+                            <div class="card__meta">
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">Why everyone is switching to this $40 mini PC</a></h3>
+                                    <div class="card__sub">2.1M views · 3 days ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#222,#666)"></div>
+                                <span class="thumb__duration">9:42</span>
+                            </a>
+                            <div class="card__meta">
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">The CES 2026 floor — only the actually weird stuff</a></h3>
+                                    <div class="card__sub">1.7M views · 1 week ago</div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <a class="thumb" href="watch.html">
+                                <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#001f3f)"></div>
+                                <span class="thumb__duration">14:12</span>
+                            </a>
+                            <div class="card__meta">
+                                <div class="card__body">
+                                    <h3 class="card__title"><a href="watch.html">RTX 6090 — the price-to-frames spreadsheet</a></h3>
+                                    <div class="card__sub">2.8M views · 2 weeks ago</div>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+
+                    <h3 class="section-title">
+                        Popular Shorts
+                        <a href="#">View all</a>
+                    </h3>
+                    <div class="shelf__rail" style="display: grid; grid-auto-flow: column; grid-auto-columns: 210px; gap: 8px; overflow-x: auto; padding-bottom: 4px">
+                        <a class="short" href="watch.html">
+                            <div class="short__thumb"><div class="thumb__img" style="background: linear-gradient(180deg,#c00,#330)"></div></div>
+                            <h4 class="short__title">When CSS finally cooperates</h4>
+                            <div class="short__meta">12M views</div>
+                        </a>
+                        <a class="short" href="watch.html">
+                            <div class="short__thumb"><div class="thumb__img" style="background: linear-gradient(180deg,#0083b0,#001f3f)"></div></div>
+                            <h4 class="short__title">3 keyboard shortcuts every dev should know</h4>
+                            <div class="short__meta">2.4M views</div>
+                        </a>
+                        <a class="short" href="watch.html">
+                            <div class="short__thumb"><div class="thumb__img" style="background: linear-gradient(180deg,#ee0979,#ff6a00)"></div></div>
+                            <h4 class="short__title">POV: you opened node_modules</h4>
+                            <div class="short__meta">8.1M views</div>
+                        </a>
+                        <a class="short" href="watch.html">
+                            <div class="short__thumb"><div class="thumb__img" style="background: linear-gradient(180deg,#5a1ad6,#1a0033)"></div></div>
+                            <h4 class="short__title">The keyboard sound everyone wants</h4>
+                            <div class="short__meta">22M views</div>
+                        </a>
+                        <a class="short" href="watch.html">
+                            <div class="short__thumb"><div class="thumb__img" style="background: linear-gradient(180deg,#f7971e,#ffd200)"></div></div>
+                            <h4 class="short__title">RGB lights ≠ performance</h4>
+                            <div class="short__meta">5.6M views</div>
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+    </body>
+</html>

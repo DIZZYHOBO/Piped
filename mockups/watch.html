@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Watch · Piped</title>
+        <link rel="icon" href="/img/icons/favicon-32x32.png" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" />
+        <style>
+            /* On the watch page, default the sidebar to "hidden" — that's the YT behavior. */
+            .app[data-active="watch"] .shell {
+                grid-template-columns: var(--rail-w) 1fr;
+            }
+            .filter-row {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding: 4px 0 12px;
+                scrollbar-width: none;
+            }
+            .filter-row::-webkit-scrollbar { display: none; }
+            .filter-row .chip { height: 28px; font-size: 13px; }
+            .ad-rail {
+                background: linear-gradient(135deg, rgba(255,0,0,0.08), transparent 70%);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 10px 12px;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                margin-bottom: 16px;
+            }
+            .ad-rail__badge {
+                background: var(--brand-red);
+                color: #fff;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 2px 6px;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+            .sponsor-pill {
+                display: inline-flex;
+                gap: 6px;
+                align-items: center;
+                background: rgba(0, 200, 83, 0.16);
+                color: #4caf50;
+                border-radius: 14px;
+                padding: 4px 10px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mockup-banner">
+            <a href="index.html">← Tour</a>
+            <span class="muted">Watch · two-column · sidebar collapses to rail · Piped-specific SponsorBlock chip preserved</span>
+        </div>
+
+        <div class="app" data-active="watch">
+            <div data-shell="topbar"></div>
+            <div class="shell">
+                <div data-shell="sidebar"></div>
+                <main>
+                    <div class="watch">
+                        <!-- Player column -->
+                        <div>
+                            <div class="player">
+                                <div class="player__poster" style="background: linear-gradient(135deg,#1a0033,#5a1ad6 60%,#c00)"></div>
+                                <div class="player__big-play">
+                                    <span class="material-symbols-outlined">play_arrow</span>
+                                </div>
+                                <div class="player__overlay">
+                                    <div class="player__progress"></div>
+                                    <div class="player__controls">
+                                        <span class="material-symbols-outlined">play_arrow</span>
+                                        <span class="material-symbols-outlined">skip_next</span>
+                                        <span class="material-symbols-outlined">volume_up</span>
+                                        <span>5:23 / 12:48</span>
+                                        <span class="spacer"></span>
+                                        <span class="sponsor-pill" title="SponsorBlock active">
+                                            <span class="material-symbols-outlined" style="font-size: 14px">block</span>
+                                            SponsorBlock · 3 segments
+                                        </span>
+                                        <span class="material-symbols-outlined">closed_caption</span>
+                                        <span class="material-symbols-outlined">settings</span>
+                                        <span class="material-symbols-outlined">picture_in_picture_alt</span>
+                                        <span class="material-symbols-outlined">crop_landscape</span>
+                                        <span class="material-symbols-outlined">fullscreen</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1 class="video-title">
+                                Why everyone is switching to this $40 mini PC — full breakdown
+                            </h1>
+
+                            <div class="video-actions">
+                                <div class="channel-row">
+                                    <span class="avatar avatar--lg" style="background: #cc1d1d; width: 48px; height: 48px; font-size: 18px"
+                                        >LT</span
+                                    >
+                                    <div class="channel-row__info">
+                                        <a class="channel-row__name" href="channel.html">
+                                            Linus Tech Tips
+                                            <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: -2px"
+                                                >verified</span
+                                            >
+                                        </a>
+                                        <span class="channel-row__subs">15.8M subscribers</span>
+                                    </div>
+                                    <button class="btn btn--primary">Subscribe</button>
+                                </div>
+
+                                <div class="action-pill">
+                                    <button>
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        128K
+                                    </button>
+                                    <button>
+                                        <span class="material-symbols-outlined">thumb_down</span>
+                                    </button>
+                                </div>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">share</span>
+                                    Share
+                                </button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">download</span>
+                                    Download
+                                </button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">playlist_add</span>
+                                    Save
+                                </button>
+                                <button class="btn">
+                                    <span class="material-symbols-outlined">open_in_new</span>
+                                    Watch on YouTube
+                                </button>
+                                <button class="icon-btn"><span class="material-symbols-outlined">more_horiz</span></button>
+                            </div>
+
+                            <div class="description">
+                                <div class="description__meta">
+                                    2,148,392 views · 3 days ago ·
+                                    <span class="sponsor-pill" style="display: inline-flex; vertical-align: -3px; margin-left: 4px">
+                                        <span class="material-symbols-outlined" style="font-size: 14px">block</span>
+                                        Sponsor segments hidden
+                                    </span>
+                                </div>
+                                We've tested every "$40 mini PC" we could find on the web and most of them are e-waste.
+                                But this one — surprisingly — isn't. Today we'll break down exactly what it can and
+                                can't do, when you'd actually buy one, and the four traps to avoid…<br /><br />
+                                <strong>Chapters</strong><br />
+                                0:00 Intro<br />
+                                1:42 The contender<br />
+                                4:18 Benchmarks<br />
+                                7:55 Heat &amp; noise<br />
+                                10:30 Verdict<br /><br />
+                                <span class="muted">Show more</span>
+                            </div>
+
+                            <h2 class="comments-head">
+                                <span>Comments <span class="comments-head__count muted">· 4,218</span></span>
+                                <span class="row" style="font-size: 14px; gap: 8px">
+                                    <span class="material-symbols-outlined">sort</span>
+                                    Sort by
+                                </span>
+                            </h2>
+
+                            <div class="row" style="gap: 12px; margin-bottom: 16px">
+                                <span class="avatar">P</span>
+                                <input
+                                    class="search__input"
+                                    style="height: 36px; border-radius: 0; border: 0; border-bottom: 1px solid var(--border); background: transparent"
+                                    placeholder="Add a comment…"
+                                />
+                            </div>
+
+                            <div class="comment">
+                                <span class="avatar" style="background: #607d8b">JC</span>
+                                <div class="comment__body">
+                                    <div class="comment__head">
+                                        <span class="comment__author">@jcoder42</span>
+                                        <span class="comment__time">2 days ago</span>
+                                    </div>
+                                    <p class="comment__text">
+                                        The fan curve trick at 7:55 is the most useful 30 seconds of YouTube I've watched all week. Already
+                                        applied it to my own machine.
+                                    </p>
+                                    <div class="comment__actions">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>2.4K</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 8px">thumb_down</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 16px">reply</span>
+                                        <span style="font-weight: 500; color: var(--text)">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comment">
+                                <span class="avatar" style="background: #8e24aa">AM</span>
+                                <div class="comment__body">
+                                    <div class="comment__head">
+                                        <span class="comment__author">@AmyMakes</span>
+                                        <span class="comment__time">1 day ago</span>
+                                    </div>
+                                    <p class="comment__text">
+                                        Honestly, the production values keep going up and the Linus rants keep getting better. Don't change.
+                                    </p>
+                                    <div class="comment__actions">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>891</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 8px">thumb_down</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 16px">reply</span>
+                                        <span style="font-weight: 500; color: var(--text)">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comment">
+                                <span class="avatar" style="background: #455a64">RT</span>
+                                <div class="comment__body">
+                                    <div class="comment__head">
+                                        <span class="comment__author">@retro_tinkerer</span>
+                                        <span class="comment__time">8 hours ago</span>
+                                    </div>
+                                    <p class="comment__text">
+                                        Could you do a follow-up that compares this against a used Lenovo Tiny? Genuine question — I keep
+                                        finding M720q's for the same money.
+                                    </p>
+                                    <div class="comment__actions">
+                                        <span class="material-symbols-outlined">thumb_up</span>
+                                        <span>312</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 8px">thumb_down</span>
+                                        <span class="material-symbols-outlined" style="margin-left: 16px">reply</span>
+                                        <span style="font-weight: 500; color: var(--text)">Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations rail -->
+                        <aside>
+                            <div class="filter-row">
+                                <button class="chip is-active">All</button>
+                                <button class="chip">From Linus Tech Tips</button>
+                                <button class="chip">Related</button>
+                                <button class="chip">Recently uploaded</button>
+                                <button class="chip">Watched</button>
+                            </div>
+                            <div class="recs">
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#0083b0,#001f3f)"></div>
+                                        <span class="thumb__duration">8:21</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">Bun is killing Node.js (here's the proof)</h3>
+                                        <div class="rec__meta">Fireship</div>
+                                        <div class="rec__meta">847K views · 2 weeks ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#283c86,#45a247)"></div>
+                                        <span class="thumb__duration">22:14</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">The map of mathematics — where every field connects</h3>
+                                        <div class="rec__meta">Veritasium</div>
+                                        <div class="rec__meta">5.4M views · 1 month ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#222,#444)"></div>
+                                        <span class="thumb__duration">15:03</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">iPhone 17 Pro Review: The compromise generation</h3>
+                                        <div class="rec__meta">MKBHD · <span class="material-symbols-outlined" style="font-size: 12px">verified</span></div>
+                                        <div class="rec__meta">3.8M views · 1 week ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#ee0979,#ff6a00)"></div>
+                                        <span class="thumb__live">Live</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">Live: SpaceX Starship Flight Test 12</h3>
+                                        <div class="rec__meta">Tom Scott Live</div>
+                                        <div class="rec__meta">42K watching now</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#00838f,#26c6da)"></div>
+                                        <span class="thumb__duration">11:32</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">What if antimatter fell up? A new experiment</h3>
+                                        <div class="rec__meta">Kurzgesagt – In a Nutshell</div>
+                                        <div class="rec__meta">8.2M views · 2 months ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#4a148c,#c00)"></div>
+                                        <span class="thumb__duration">31:09</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">We rebuilt the LTT studio — here's what failed first</h3>
+                                        <div class="rec__meta">Linus Tech Tips</div>
+                                        <div class="rec__meta">1.2M views · 5 days ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#1d4044,#0e7c64)"></div>
+                                        <span class="thumb__duration">7:19</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">Vite 7 in 100 seconds</h3>
+                                        <div class="rec__meta">Fireship</div>
+                                        <div class="rec__meta">412K views · 4 days ago</div>
+                                    </div>
+                                </a>
+                                <a class="rec" href="watch.html">
+                                    <div class="rec__thumb">
+                                        <div class="thumb__img" style="background: linear-gradient(135deg,#ff7e5f,#feb47b)"></div>
+                                        <span class="thumb__duration">19:42</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="rec__title">The hidden cost of cheap solar panels</h3>
+                                        <div class="rec__meta">Veritasium</div>
+                                        <div class="rec__meta">2.0M views · 3 weeks ago</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </aside>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="shell.js"></script>
+        <script>
+            // Watch page collapses sidebar by default the first time it's visited.
+            (function () {
+                if (!localStorage.getItem("piped-mock-sidebar-watch-seen")) {
+                    localStorage.setItem("piped-mock-sidebar", "rail");
+                    localStorage.setItem("piped-mock-sidebar-watch-seen", "1");
+                }
+            })();
+        </script>
+    </body>
+</html>
