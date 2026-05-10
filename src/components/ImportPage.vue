@@ -1,56 +1,51 @@
 <template>
-    <div class="text-center">
-        <form>
-            <div>
-                <input ref="fileSelector" type="file" @change="fileChange" />
-            </div>
-            <div>
-                <strong v-text="`${$t('info.selected_subscriptions')}: ${selectedSubscriptions}`" />
-            </div>
-            <div>
-                <strong><span v-t="'actions.override'" />: <UiCheckbox v-model="override" /></strong>
-            </div>
-            <div>
-                <Button v-t="'actions.import'" @click="handleImport" />
-            </div>
-        </form>
-        <br />
-        <strong>Importing Subscriptions from YouTube</strong>
-        <br />
-        <div>
-            Open
-            <a href="https://takeout.google.com/takeout/custom/youtube">takeout.google.com/takeout/custom/youtube</a>
-            <br />
-            In "Select data to include", click on "All YouTube data included" and select only "subscriptions".
-            <br />
-            Create the export and download the zip file.
-            <br />
-            Extract subscriptions.csv from the zip file.
-            <br />
-            Select and import the file above.
+    <div class="mx-auto max-w-2xl">
+        <h1 class="pt-3 pb-4 text-2xl font-bold text-yt-text">Import subscriptions</h1>
+
+        <div class="rounded-2xl bg-yt-surface p-5 text-yt-text">
+            <form class="flex flex-col gap-4">
+                <div class="flex flex-wrap items-center gap-3">
+                    <input
+                        ref="fileSelector"
+                        type="file"
+                        class="block w-full text-sm text-yt-text-secondary file:mr-3 file:inline-flex file:h-9 file:cursor-pointer file:items-center file:rounded-full file:border-0 file:bg-yt-bg file:px-4 file:text-sm file:font-medium file:text-yt-text hover:file:bg-yt-surface-hover"
+                        @change="fileChange"
+                    />
+                </div>
+                <p class="text-sm text-yt-text-secondary">
+                    <span
+                        class="font-medium text-yt-text"
+                        v-text="`${$t('info.selected_subscriptions')}: ${selectedSubscriptions}`"
+                    />
+                </p>
+                <label class="inline-flex items-center gap-2 text-sm text-yt-text">
+                    <UiCheckbox v-model="override" />
+                    <span v-t="'actions.override'" />
+                </label>
+                <Button v-t="'actions.import'" class="self-start" @click="handleImport" />
+            </form>
         </div>
-        <br />
-        <strong>Importing Subscriptions from Invidious</strong>
-        <br />
-        <div>
+
+        <h2 class="mt-8 mb-3 text-lg font-semibold text-yt-text">From YouTube</h2>
+        <div class="rounded-xl bg-yt-surface p-4 text-sm/relaxed text-yt-text-secondary">
             Open
-            <a href="https://invidio.us/data_control">invidiou.us/data_control</a>
-            <br />
-            Click on any of the export options.
-            <br />
-            Select and import the file above.
+            <a class="text-yt-text underline" href="https://takeout.google.com/takeout/custom/youtube"
+                >takeout.google.com/takeout/custom/youtube</a
+            >. In "Select data to include", click on "All YouTube data included" and select only "subscriptions". Create
+            the export, download the zip, extract <code class="text-yt-text">subscriptions.csv</code>, then import it
+            above.
         </div>
-        <br />
-        <strong>Importing Subscriptions from NewPipe</strong>
-        <br />
-        <div>
-            Go to the Feed tab.
-            <br />
-            Click on the arrow on where it says "Subscriptions".
-            <br />
-            Save the file somewhere.
-            <br />
-            Select and import the file above.
+
+        <h2 class="mt-6 mb-3 text-lg font-semibold text-yt-text">From Invidious</h2>
+        <div class="rounded-xl bg-yt-surface p-4 text-sm/relaxed text-yt-text-secondary">
+            Open
+            <a class="text-yt-text underline" href="https://invidio.us/data_control">invidiou.us/data_control</a>. Click
+            any of the export options, then import the resulting file above.
+        </div>
+
+        <h2 class="mt-6 mb-3 text-lg font-semibold text-yt-text">From NewPipe</h2>
+        <div class="rounded-xl bg-yt-surface p-4 text-sm/relaxed text-yt-text-secondary">
+            Go to the Feed tab → click the arrow next to "Subscriptions" → save the file → import it above.
         </div>
     </div>
 </template>

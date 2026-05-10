@@ -1,14 +1,14 @@
 <template>
-    <div class="flex">
+    <div class="flex items-center gap-3 py-3">
         <button
-            class="inline-flex items-center gap-1 rounded-sm bg-gray-300 px-3 py-2 text-gray-700 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-300 dark:hover:bg-dark-300"
+            class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-surface px-3 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
             @click="$router.go(-1) || $router.push('/')"
         >
             <i-fa6-solid-chevron-left class="shrink-0" /><span v-t="'actions.back'" />
         </button>
+        <h1 v-t="'titles.preferences'" class="text-2xl font-bold text-yt-text" />
     </div>
-    <h1 v-t="'titles.preferences'" class="text-center font-bold" />
-    <hr />
+    <hr class="border-yt-border" />
     <label
         for="ddlTheme"
         class="mx-[15vw] my-2 flex items-center justify-between odd:bg-gray-200 max-md:mx-[2vw] dark:odd:bg-dark-800"
@@ -17,7 +17,7 @@
         <select
             id="ddlTheme"
             v-model="selectedTheme"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-t="'actions.auto'" value="auto" />
@@ -33,7 +33,7 @@
         <select
             id="ddlLanguageSelection"
             v-model="selectedLanguage"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-for="language in languages" :key="language.code" :value="language.code" v-text="language.name" />
@@ -61,7 +61,7 @@
         <select
             id="ddlDefaultHomepage"
             v-model="defaultHomepage"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-t="'titles.trending'" value="trending" />
@@ -114,7 +114,7 @@
         <select
             id="ddlDefaultQuality"
             v-model.number="defaultQuality"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-t="'actions.auto'" :value="0" />
@@ -162,7 +162,7 @@
         <select
             id="ddlDefaultHomepage"
             v-model="mobileChapterLayout"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-t="'video.chapters_horizontal'" value="Horizontal" />
@@ -250,7 +250,7 @@
             <select
                 :id="'ddlSkip_' + name"
                 v-model="item.value"
-                class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+                class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
                 @change="onChange($event)"
             >
                 <option v-t="'actions.no'" value="no" />
@@ -298,7 +298,7 @@
         <select
             id="ddlInstanceSelection"
             v-model="selectedInstance"
-            class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option
@@ -324,7 +324,7 @@
             <select
                 id="ddlAuthInstanceSelection"
                 v-model="selectedAuthInstance"
-                class="h-8 w-auto bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+                class="h-9 rounded-md bg-yt-surface px-2 text-yt-text"
                 @change="onChange($event)"
             >
                 <option
@@ -340,7 +340,7 @@
         <span v-t="'titles.custom_instances'" class="w-max" />
         <button
             v-t="'actions.customize'"
-            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+            class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
             @click="showCustomInstancesModal = true"
         />
     </div>
@@ -367,7 +367,7 @@
                 />
                 <a
                     v-t="'actions.delete_account'"
-                    class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                    class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                     @click="deleteAccount"
                 />
             </div>
@@ -377,12 +377,12 @@
         >
             <a
                 v-t="'actions.logout'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                 @click="logout"
             />
             <a
                 v-t="'actions.invalidate_session'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                 style="margin-left: 0.5em"
                 @click="invalidateSession"
             />
@@ -423,7 +423,7 @@
     <br />
     <button
         v-t="'actions.reset_preferences'"
-        class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+        class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
         @click="showConfirmResetPrefsDialog = true"
     />
     <button
@@ -434,7 +434,7 @@
     <label
         v-t="'actions.restore_preferences'"
         for="fileSelector"
-        class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+        class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
         @click="restorePreferences()"
     />
     <input id="fileSelector" ref="fileSelectorEl" class="hidden" type="file" @change="restorePreferences()" />

@@ -1,26 +1,25 @@
 <template>
-    <div class="flex justify-center">
-        <h1 v-t="'titles.register'" class="my-4 text-center font-bold" />
-        <i-fa6-solid-circle-info class="mt-6 ml-2 cursor-pointer" :title="$t('info.register_note')" />
-    </div>
-    <hr />
-    <div class="flex flex-col items-center justify-center text-center">
-        <form class="w-max items-center px-3 *:pb-3">
-            <div>
-                <input
-                    v-model="username"
-                    class="h-8 w-full rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
-                    type="text"
-                    autocomplete="username"
-                    :placeholder="$t('login.username')"
-                    :aria-label="$t('login.username')"
-                    @keyup.enter="register"
-                />
-            </div>
-            <div class="flex justify-center">
+    <div class="mx-auto mt-8 max-w-sm rounded-2xl bg-yt-surface p-6 text-yt-text">
+        <div class="mb-2 flex items-center gap-2">
+            <h1 v-t="'titles.register'" class="text-2xl font-bold" />
+            <i-fa6-solid-circle-info class="cursor-pointer text-yt-text-secondary" :title="$t('info.register_note')" />
+        </div>
+        <p class="mb-5 text-sm text-yt-text-secondary">Create an account on this Piped instance.</p>
+
+        <form class="flex flex-col gap-3">
+            <input
+                v-model="username"
+                class="h-10 rounded-lg bg-yt-bg px-3 text-yt-text outline-none focus:ring-2 focus:ring-yt-brand-red"
+                type="text"
+                autocomplete="username"
+                :placeholder="$t('login.username')"
+                :aria-label="$t('login.username')"
+                @keyup.enter="register"
+            />
+            <div class="flex items-center gap-2">
                 <input
                     v-model="password"
-                    class="h-auto w-full rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                    class="h-10 flex-1 rounded-lg bg-yt-bg px-3 text-yt-text outline-none focus:ring-2 focus:ring-yt-brand-red"
                     :type="showPassword ? 'text' : 'password'"
                     autocomplete="password"
                     :placeholder="$t('login.password')"
@@ -29,10 +28,10 @@
                 />
                 <PasswordToggle v-model="showPassword" />
             </div>
-            <div class="flex justify-center">
+            <div class="flex items-center gap-2">
                 <input
                     v-model="passwordConfirm"
-                    class="h-auto w-full rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                    class="h-10 flex-1 rounded-lg bg-yt-bg px-3 text-yt-text outline-none focus:ring-2 focus:ring-yt-brand-red"
                     :type="showConfirmPassword ? 'text' : 'password'"
                     autocomplete="password"
                     :placeholder="$t('login.password_confirm')"
@@ -41,9 +40,7 @@
                 />
                 <PasswordToggle v-model="showConfirmPassword" />
             </div>
-            <div>
-                <Button v-t="'titles.register'" @click="register" />
-            </div>
+            <Button v-t="'titles.register'" class="mt-2 self-stretch" @click="register" />
         </form>
     </div>
     <ConfirmModal
