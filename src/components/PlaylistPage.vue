@@ -2,51 +2,55 @@
     <ErrorHandler v-if="playlist && playlist.error" :message="playlist.message" :error="playlist.error" />
 
     <LoadingIndicatorPage v-show="!playlist?.error" :show-content="playlist != null">
-        <h1 class="mt-4 mb-1 ml-1 text-3xl!" v-text="playlist.name" />
+        <header class="mt-4 mb-6 rounded-2xl bg-yt-surface p-5">
+            <h1 class="text-2xl font-bold text-yt-text" v-text="playlist.name" />
 
-        <CollapsableText v-if="playlist?.description" :text="playlist.description" />
+            <CollapsableText v-if="playlist?.description" :text="playlist.description" />
 
-        <div class="mt-1 flex justify-between max-md:flex-col md:items-center">
-            <div>
+            <div class="mt-3 flex flex-wrap items-center gap-3">
                 <router-link
-                    class="flex items-center gap-3 hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
+                    v-if="playlist.uploaderUrl"
+                    class="flex items-center gap-2 text-sm text-yt-text hover:text-yt-text-secondary"
                     :to="playlist.uploaderUrl || '/'"
                 >
-                    <img loading="lazy" :src="playlist.uploaderAvatar" class="h-12 rounded-full" />
+                    <img loading="lazy" :src="playlist.uploaderAvatar" class="size-8 rounded-full" />
                     <strong v-text="playlist.uploader" />
                 </router-link>
-            </div>
-            <div class="flex flex-wrap items-center gap-1">
-                <strong
-                    v-text="
-                        `${playlist.videos} ${$t('video.videos')} - ${timeFormat(totalDuration)}${
-                            playlist.nextpage ? '+' : ''
+                <span class="text-sm text-yt-text-secondary">
+                    {{
+                        `${playlist.videos} ${$t("video.videos")} · ${timeFormat(totalDuration)}${
+                            playlist.nextpage ? "+" : ""
                         }`
-                    "
-                />
+                    }}
+                </span>
+            </div>
+
+            <div class="mt-4 flex flex-wrap items-center gap-2">
                 <button
                     v-if="!isPipedPlaylist"
-                    class="mx-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                    class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-bg px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                     @click="bookmarkPlaylist"
                 >
-                    {{ $t(`actions.${isBookmarked ? "playlist_bookmarked" : "bookmark_playlist"}`)
-                    }}<i-fa6-solid-bookmark class="ml-3" />
+                    <i-fa6-solid-bookmark />
+                    {{ $t(`actions.${isBookmarked ? "playlist_bookmarked" : "bookmark_playlist"}`) }}
                 </button>
                 <button
                     v-if="authenticated && !isPipedPlaylist"
-                    class="mr-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                    class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-bg px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                     @click="clonePlaylist"
                 >
-                    {{ $t("actions.clone_playlist") }}<i-fa6-solid-clone class="ml-3" />
+                    <i-fa6-solid-clone />
+                    {{ $t("actions.clone_playlist") }}
                 </button>
                 <button
-                    class="mr-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                    class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-bg px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                     @click="downloadPlaylistAsTxt"
                 >
+                    <i-fa6-solid-download />
                     {{ $t("actions.download_as_txt") }}
                 </button>
                 <a
-                    class="mr-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                    class="inline-flex size-9 items-center justify-center rounded-full bg-yt-bg text-yt-text hover:bg-yt-surface-hover"
                     :href="getRssUrl"
                     :aria-label="$t('actions.playlist_rss_feed')"
                 >
@@ -54,13 +58,9 @@
                 </a>
                 <WatchOnButton :link="`https://www.youtube.com/playlist?list=${$route.query.list}`" />
             </div>
-        </div>
+        </header>
 
-        <hr />
-
-        <div
-            class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
-        >
+        <div class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             <VideoItem
                 v-for="(video, index) in playlist.relatedStreams"
                 :key="video.url"

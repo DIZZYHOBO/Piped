@@ -1,17 +1,16 @@
 <template>
-    <h2 v-t="'titles.playlists'" class="my-4 font-bold" />
-
-    <div class="mb-3 flex justify-between">
-        <button
-            v-t="'actions.create_playlist'"
-            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-            @click="showCreatePlaylistModal = true"
-        />
-        <div class="flex">
+    <div class="flex flex-wrap items-center gap-3 py-3">
+        <h1 v-t="'titles.playlists'" class="text-2xl font-bold text-yt-text" />
+        <span class="ml-auto flex flex-wrap items-center gap-2">
+            <button
+                v-t="'actions.create_playlist'"
+                class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-text px-4 text-sm font-medium text-yt-bg hover:bg-yt-text-secondary"
+                @click="showCreatePlaylistModal = true"
+            />
             <button
                 v-if="playlists.length > 0"
                 v-t="'actions.export_to_json'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                 @click="exportPlaylists"
             />
             <input
@@ -25,57 +24,59 @@
             <label
                 v-t="'actions.import_from_json_csv'"
                 for="fileSelector"
-                class="ml-2 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
             />
-        </div>
+        </span>
     </div>
 
-    <div
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
-    >
+    <div class="grid grid-cols-1 gap-x-4 gap-y-10 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <div v-for="playlist in playlists" :key="playlist.id">
-            <router-link :to="`/playlist?list=${playlist.id}`">
-                <img class="w-full" :src="playlist.thumbnail" alt="thumbnail" />
-                <div class="relative text-sm">
+            <router-link :to="`/playlist?list=${playlist.id}`" class="block">
+                <div class="relative overflow-hidden rounded-xl">
+                    <img class="aspect-video w-full object-cover" :src="playlist.thumbnail" alt="thumbnail" />
                     <span
-                        class="absolute right-1.25 bottom-1.25 rounded-md bg-black/75 px-1.25 text-white"
-                        v-text="`${playlist.videos} ${$t('video.videos')}`"
-                    />
+                        class="absolute right-2 bottom-2 inline-flex items-center gap-1 rounded-md bg-black/85 px-2 py-1 text-xs font-medium text-white"
+                    >
+                        <i-fa6-solid-list />
+                        <span v-text="`${playlist.videos} ${$t('video.videos')}`" />
+                    </span>
                 </div>
                 <p
-                    class="my-2 line-clamp-2 hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
+                    class="mt-3 line-clamp-2 text-sm/snug font-medium text-yt-text"
                     :title="playlist.name"
                     v-text="playlist.name"
                 />
             </router-link>
-            <button
-                v-t="'actions.edit_playlist'"
-                class="inline-block size-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="showPlaylistEditModal(playlist)"
-            />
-            <button
-                v-t="'actions.delete_playlist'"
-                class="ml-2 inline-block size-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="playlistToDelete = playlist.id"
-            />
+            <div class="mt-2 flex gap-2">
+                <button
+                    v-t="'actions.edit_playlist'"
+                    class="cursor-pointer rounded-full bg-yt-surface px-3 py-1.5 text-xs font-medium text-yt-text hover:bg-yt-surface-hover"
+                    @click="showPlaylistEditModal(playlist)"
+                />
+                <button
+                    v-t="'actions.delete_playlist'"
+                    class="cursor-pointer rounded-full bg-yt-surface px-3 py-1.5 text-xs font-medium text-yt-text hover:bg-yt-surface-hover"
+                    @click="playlistToDelete = playlist.id"
+                />
+            </div>
             <ModalComponent v-if="playlist.id == playlistToEdit" @close="playlistToEdit = null">
                 <div class="flex flex-col gap-2">
                     <h2 v-t="'actions.edit_playlist'" />
                     <input
                         v-model="newPlaylistName"
-                        class="h-8 rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                        class="h-9 rounded-md bg-yt-surface px-3 text-yt-text outline-none focus:border-blue-500"
                         type="text"
                         :placeholder="$t('actions.playlist_name')"
                     />
                     <input
                         v-model="newPlaylistDescription"
-                        class="h-8 rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                        class="h-9 rounded-md bg-yt-surface px-3 text-yt-text outline-none focus:border-blue-500"
                         type="text"
                         :placeholder="$t('actions.playlist_description')"
                     />
                     <button
                         v-t="'actions.okay'"
-                        class="ml-auto inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                        class="ml-auto inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-text px-4 text-sm font-medium text-yt-bg hover:bg-yt-text-secondary"
                         @click="editPlaylist(playlist)"
                     />
                 </div>
@@ -88,42 +89,44 @@
             />
         </div>
     </div>
-    <hr />
 
-    <h2 v-t="'titles.bookmarks'" class="my-4 font-bold" />
+    <h2 v-t="'titles.bookmarks'" class="mt-12 mb-4 text-2xl font-bold text-yt-text" />
 
     <div
         v-if="bookmarks"
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
+        class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
     >
         <router-link
             v-for="(playlist, index) in bookmarks"
             :key="playlist.playlistId"
             :to="`/playlist?list=${playlist.playlistId}`"
+            class="block"
         >
-            <img class="w-full" :src="playlist.thumbnail" alt="thumbnail" />
-            <div class="relative text-sm">
+            <div class="relative overflow-hidden rounded-xl">
+                <img class="aspect-video w-full object-cover" :src="playlist.thumbnail" alt="thumbnail" />
                 <span
-                    class="absolute right-1.25 bottom-1.25 rounded-md bg-black/75 px-1.25 text-white"
+                    class="absolute right-2 bottom-2 inline-flex items-center gap-1 rounded-md bg-black/85 px-2 py-1 text-xs font-medium text-white"
                     v-text="`${playlist.videos} ${$t('video.videos')}`"
                 />
-                <div class="absolute right-1.25 bottom-25 z-100 px-1.25" @click.prevent="removeBookmark(index)">
-                    <i-fa6-solid-bookmark class="ml-3" />
-                </div>
+                <button
+                    class="absolute top-2 right-2 z-10 grid size-8 place-items-center rounded-full bg-black/70 text-white hover:bg-black/85"
+                    @click.prevent="removeBookmark(index)"
+                >
+                    <i-fa6-solid-bookmark />
+                </button>
             </div>
             <p
-                style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical"
-                class="my-2 flex overflow-hidden hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
+                class="mt-3 line-clamp-2 text-sm/snug font-medium text-yt-text"
                 :title="playlist.name"
                 v-text="playlist.name"
             />
-            <a :href="playlist.uploaderUrl" class="flex items-center">
-                <img class="size-8 rounded-full" :src="playlist.uploaderAvatar" />
-                <span class="ml-3 hover:underline" v-text="playlist.uploader" />
-            </a>
+            <span class="mt-1.5 flex items-center gap-2 text-xs text-yt-text-secondary">
+                <img class="size-6 rounded-full" :src="playlist.uploaderAvatar" />
+                <span v-text="playlist.uploader" />
+            </span>
         </router-link>
     </div>
-    <br />
+
     <CreatePlaylistModal
         v-if="showCreatePlaylistModal"
         @close="showCreatePlaylistModal = false"

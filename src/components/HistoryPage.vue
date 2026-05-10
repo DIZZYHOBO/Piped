@@ -1,36 +1,31 @@
 <template>
-    <h1 v-t="'titles.history'" class="my-2 mb-3 text-center font-bold" />
+    <div class="flex items-center gap-3 py-3">
+        <h1 v-t="'titles.history'" class="text-2xl font-bold text-yt-text" />
+    </div>
 
-    <div class="flex justify-between">
-        <div class="flex flex-col gap-2 md:flex-row md:items-center">
-            <button
-                v-t="'actions.clear_history'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="clearHistory"
-            />
+    <div class="flex flex-wrap items-center gap-2 border-y border-yt-border py-3">
+        <button
+            v-t="'actions.clear_history'"
+            class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            @click="clearHistory"
+        />
+        <button
+            v-t="'actions.export_history'"
+            class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            @click="showExportModal = !showExportModal"
+        />
+        <button
+            v-t="'actions.import_history'"
+            class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+            @click="showImportModal = !showImportModal"
+        />
 
-            <button
-                v-t="'actions.export_history'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="showExportModal = !showExportModal"
-            />
-            <button
-                v-t="'actions.import_history'"
-                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                @click="showImportModal = !showImportModal"
-            />
-        </div>
-
-        <div class="flex items-center gap-1">
-            <SortingSelector by-key="watchedAt" @apply="order => videos.sort(order)" />
-        </div>
-
-        <div class="ml-4 flex items-center">
+        <span class="ml-auto inline-flex items-center gap-2 text-sm text-yt-text-secondary">
             <UiCheckbox id="autoDelete" v-model="autoDeleteHistory" @change="onChange" />
-            <label v-t="'actions.delete_automatically'" class="ml-2" for="autoDelete" />
+            <label v-t="'actions.delete_automatically'" for="autoDelete" />
             <select
                 v-model="autoDeleteDelayHours"
-                class="ml-3 h-8 rounded-md bg-gray-300 pl-3 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+                class="h-8 rounded-md bg-yt-surface px-2 text-yt-text"
                 @change="onChange"
             >
                 <option v-t="{ path: 'info.hours', args: { amount: '1' } }" value="1" />
@@ -44,18 +39,14 @@
                 <option v-t="{ path: 'info.months', args: { amount: '1' } }" value="672" />
                 <option v-t="{ path: 'info.months', args: { amount: '2' } }" value="1344" />
             </select>
-        </div>
+            <SortingSelector by-key="watchedAt" @apply="order => videos.sort(order)" />
+        </span>
     </div>
 
-    <hr />
-
-    <div
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
-    >
+    <div class="grid grid-cols-1 gap-x-4 gap-y-10 pt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <VideoItem v-for="video in videos" :key="video.url" :item="video" />
     </div>
 
-    <br />
     <ExportHistoryModal v-if="showExportModal" @close="showExportModal = false" />
     <ImportHistoryModal v-if="showImportModal" @close="showImportModal = false" />
 </template>

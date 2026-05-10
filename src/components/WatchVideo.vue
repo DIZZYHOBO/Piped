@@ -9,7 +9,7 @@
             :is-embed="isEmbed"
         />
     </div>
-    <div id="theaterModeSpot" class="-mx-[1vw]"></div>
+    <div id="theaterModeSpot" class="mx-[-1vw]"></div>
     <LoadingIndicatorPage :show-content="video != null && !isEmbed" class="w-full">
         <ErrorHandler v-if="video && video.error" :message="video.message" :error="video.error" />
         <Transition>
@@ -66,54 +66,47 @@
                     />
                 </div>
                 <!-- video title -->
-                <div class="mt-2 text-2xl font-bold wrap-break-word" v-text="video.title" />
-                <div class="my-3 flex flex-wrap">
-                    <!-- views / date -->
-                    <div class="flex flex-auto gap-2">
-                        <span v-t="{ path: 'video.views', args: { views: addCommas(video.views) } }" />
-                        <span> | </span>
-                        <span :title="new Date(video.uploadDate).toLocaleString()" v-text="uploadDate" />
-                    </div>
-                    <!-- Likes/dilikes -->
-                    <div class="flex gap-2">
-                        <template v-if="video.likes >= 0">
-                            <div class="flex items-center">
-                                <i-fa6-solid-thumbs-up />
-                                <strong class="ml-1" v-text="addCommas(video.likes)" />
-                            </div>
-                            <div class="flex items-center">
-                                <i-fa6-solid-thumbs-down />
-                                <strong class="ml-1" v-text="video.dislikes >= 0 ? addCommas(video.dislikes) : '?'" />
-                            </div>
-                        </template>
-                        <template v-if="video.likes < 0">
-                            <div>
-                                <strong v-t="'video.ratings_disabled'" />
-                            </div>
-                        </template>
-                    </div>
-                </div>
-                <!-- Channel info & options flex container -->
-                <div class="flex flex-wrap gap-1">
-                    <!-- Channel Image & Info -->
-                    <div class="flex items-center">
+                <h1 class="mt-3 text-xl/snug font-semibold wrap-break-word text-yt-text" v-text="video.title" />
+
+                <!-- Channel row + action pills -->
+                <div class="my-3 flex flex-wrap items-center gap-3">
+                    <!-- Channel info -->
+                    <div class="flex items-center gap-3">
                         <img
                             loading="lazy"
-                            height="48"
-                            width="48"
+                            height="40"
+                            width="40"
                             :src="video.uploaderAvatar"
                             alt=""
-                            class="rounded-full"
+                            class="size-10 rounded-full"
                         />
-                        <router-link
-                            v-if="video.uploaderUrl"
-                            class="ml-1.5 hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
-                            :to="video.uploaderUrl"
-                            >{{ video.uploader }}</router-link
-                        >
-                        <!-- Verified Badge -->
-                        <i-fa6-solid-check v-if="video.uploaderVerified" class="ml-1" />
+                        <div class="flex flex-col leading-tight">
+                            <router-link
+                                v-if="video.uploaderUrl"
+                                class="flex items-center gap-1 text-base font-medium text-yt-text hover:text-yt-text-secondary"
+                                :to="video.uploaderUrl"
+                            >
+                                {{ video.uploader }}
+                                <i-fa6-solid-check v-if="video.uploaderVerified" class="text-xs" />
+                            </router-link>
+                            <span
+                                v-if="video.uploaderSubscriberCount >= 0"
+                                class="text-xs text-yt-text-secondary"
+                                v-text="`${numberFormat(video.uploaderSubscriberCount)} subscribers`"
+                            />
+                        </div>
+                        <button
+                            class="ml-3 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors"
+                            :class="
+                                subscribed
+                                    ? 'bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+                                    : 'bg-yt-text text-yt-bg hover:bg-yt-text-secondary'
+                            "
+                            @click="subscribeHandler"
+                            v-text="$t('actions.' + (subscribed ? 'unsubscribe' : 'subscribe'))"
+                        />
                     </div>
+
                     <PlaylistAddModal
                         v-if="showModal"
                         :video-id="getVideoId()"
@@ -128,151 +121,177 @@
                         :playlist-index="index"
                         @close="showShareModal = !showShareModal"
                     />
-                    <div class="ml-auto flex flex-wrap gap-1">
-                        <!-- Subscribe Button -->
-                        <button
-                            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:hidden max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                            @click="downloadCurrentFrame"
+
+                    <!-- Action pill row -->
+                    <div class="ml-auto flex flex-wrap items-center gap-2">
+                        <!-- Likes / dislikes as a single pill -->
+                        <div
+                            v-if="video.likes >= 0"
+                            class="inline-flex h-9 items-stretch overflow-hidden rounded-full bg-yt-surface text-yt-text"
                         >
-                            {{ $t("actions.download_frame") }}<i-fa6-solid-download class="ml-1" />
+                            <span class="inline-flex items-center gap-1.5 px-3 hover:bg-yt-surface-hover">
+                                <i-fa6-solid-thumbs-up />
+                                <span v-text="addCommas(video.likes)" />
+                            </span>
+                            <span class="border-l border-yt-border" />
+                            <span class="inline-flex items-center gap-1.5 px-3 hover:bg-yt-surface-hover">
+                                <i-fa6-solid-thumbs-down />
+                                <span v-text="video.dislikes >= 0 ? addCommas(video.dislikes) : '?'" />
+                            </span>
+                        </div>
+                        <span
+                            v-else
+                            class="inline-flex h-9 items-center rounded-full bg-yt-surface px-3 text-sm text-yt-text-secondary"
+                        >
+                            <strong v-t="'video.ratings_disabled'" />
+                        </span>
+
+                        <button
+                            class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-surface px-3 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
+                            @click="showShareModal = !showShareModal"
+                        >
+                            <i-fa6-solid-share />
+                            <span v-t="'actions.share'" class="max-lg:hidden" />
                         </button>
                         <button
-                            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                            class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-surface px-3 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                             @click="showModal = !showModal"
                         >
-                            {{ $t("actions.add_to_playlist") }}<i-fa6-solid-circle-plus class="ml-1" />
+                            <i-fa6-solid-circle-plus />
+                            <span class="max-lg:hidden">{{ $t("actions.add_to_playlist") }}</span>
                         </button>
                         <button
-                            class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                            @click="subscribeHandler"
-                            v-text="
-                                $t('actions.' + (subscribed ? 'unsubscribe' : 'subscribe')) +
-                                ' - ' +
-                                numberFormat(video.uploaderSubscriberCount)
-                            "
+                            class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-yt-surface px-3 text-sm font-medium text-yt-text hover:bg-yt-surface-hover max-md:hidden"
+                            @click="downloadCurrentFrame"
+                        >
+                            <i-fa6-solid-download />
+                            <span class="max-lg:hidden">{{ $t("actions.download_frame") }}</span>
+                        </button>
+                        <router-link
+                            :to="toggleListenUrl"
+                            :aria-label="(isListening ? 'Watch ' : 'Listen to ') + video.title"
+                            :title="(isListening ? 'Watch ' : 'Listen to ') + video.title"
+                            class="inline-flex size-9 items-center justify-center rounded-full bg-yt-surface text-yt-text hover:bg-yt-surface-hover"
+                        >
+                            <i-fa6-solid-tv v-if="isListening" />
+                            <i-fa6-solid-headphones v-else />
+                        </router-link>
+                        <a
+                            v-if="video.uploaderUrl"
+                            aria-label="RSS feed"
+                            title="RSS feed"
+                            role="button"
+                            :href="`${apiUrl()}/feed/unauthenticated/rss?channels=${video.uploaderUrl.split('/')[2]}`"
+                            target="_blank"
+                            class="inline-flex size-9 items-center justify-center rounded-full bg-yt-surface text-yt-text hover:bg-yt-surface-hover"
+                        >
+                            <i-fa6-solid-rss />
+                        </a>
+                        <WatchOnButton :link="youtubeVideoHref" />
+                        <WatchOnButton
+                            v-if="video.lbryId"
+                            :link="`https://odysee.com/${video.lbryId}`"
+                            platform="Odysee"
                         />
-                        <div class="flex flex-wrap gap-1">
-                            <!-- RSS Feed button -->
-                            <a
-                                v-if="video.uploaderUrl"
-                                aria-label="RSS feed"
-                                title="RSS feed"
-                                role="button"
-                                :href="`${apiUrl()}/feed/unauthenticated/rss?channels=${video.uploaderUrl.split('/')[2]}`"
-                                target="_blank"
-                                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                            >
-                                <i-fa6-solid-rss class="mx-1.5" />
-                            </a>
-                            <!-- Share Dialog -->
-                            <button
-                                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                                @click="showShareModal = !showShareModal"
-                            >
-                                <i18n-t class="max-lg:hidden" keypath="actions.share" tag="strong"></i18n-t>
-                                <i-fa6-solid-share class="mx-1.5" />
-                            </button>
-                            <!-- YouTube -->
-                            <WatchOnButton :link="youtubeVideoHref" />
-                            <!-- Odysee -->
-                            <WatchOnButton
-                                v-if="video.lbryId"
-                                :link="`https://odysee.com/${video.lbryId}`"
-                                platform="Odysee"
-                            />
-                            <!-- listen / watch toggle -->
-                            <router-link
-                                :to="toggleListenUrl"
-                                :aria-label="(isListening ? 'Watch ' : 'Listen to ') + video.title"
-                                :title="(isListening ? 'Watch ' : 'Listen to ') + video.title"
-                                class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                            >
-                                <div>
-                                    <i-fa6-solid-tv v-if="isListening" class="mx-1.5" />
-                                    <i-fa6-solid-headphones v-else class="mx-1.5" />
-                                </div>
-                            </router-link>
-                        </div>
                     </div>
                 </div>
 
-                <hr class="mb-2" />
-
-                <div
-                    v-for="metaInfo in video?.metaInfo ?? []"
-                    :key="metaInfo.title"
-                    class="my-3 inline-block w-auto cursor-default rounded-sm bg-gray-300 px-4 py-2 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
-                >
-                    <span>{{ metaInfo.description ?? metaInfo.title }}</span>
-                    <a v-for="(link, linkIndex) in metaInfo.urls" :key="linkIndex" :href="link" class="underline">{{
-                        metaInfo.urlTexts[linkIndex]
-                    }}</a>
-                    <br />
-                </div>
-
-                <button
-                    v-t="`actions.${showDesc ? 'minimize_description' : 'show_description'}`"
-                    class="mb-2 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                    @click="showDesc = !showDesc"
-                />
-
-                <span
-                    v-show="video?.chapters?.length > 0"
-                    class="ml-2 inline-block w-auto cursor-default rounded-sm bg-gray-300 py-2 text-gray-600 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400"
-                >
-                    <UiCheckbox id="showChapters" v-model="showChapters" />
-                    <label v-t="'actions.show_chapters'" class="ml-2" for="showChapters" />
-                </span>
-
-                <template v-if="showDesc">
-                    <!-- eslint-disable-next-line vue/no-v-html -->
-                    <div class="wrap-break-word [&_a]:underline [&_a]:brightness-75" v-html="purifiedDescription" />
-                    <br />
+                <!-- Description card (views/date + collapsible body) -->
+                <div class="mb-4 rounded-xl bg-yt-surface p-3 text-sm text-yt-text">
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-medium text-yt-text-secondary">
+                        <span v-t="{ path: 'video.views', args: { views: addCommas(video.views) } }" />
+                        <span :title="new Date(video.uploadDate).toLocaleString()" v-text="uploadDate" />
+                        <button
+                            v-t="`actions.${showDesc ? 'minimize_description' : 'show_description'}`"
+                            class="ml-auto cursor-pointer text-yt-text hover:text-yt-text-secondary"
+                            @click="showDesc = !showDesc"
+                        />
+                    </div>
 
                     <div
-                        v-if="sponsors && sponsors.segments"
-                        v-text="`${$t('video.sponsor_segments')}: ${sponsors.segments.length}`"
-                    />
-                    <div v-if="video.category" v-text="`${$t('video.category')}: ${video.category}`" />
-                    <div v-text="`${$t('video.license')}: ${video.license}`" />
-                    <div class="capitalize" v-text="`${$t('video.visibility')}: ${video.visibility}`" />
-
-                    <div v-if="video.tags" class="mt-2 flex flex-wrap gap-2">
-                        <router-link
-                            v-for="tag in video.tags"
-                            :key="tag"
-                            class="line-clamp-1 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 px-2 py-1 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                            :to="`/results?search_query=${encodeURIComponent(tag)}`"
-                            >{{ tag }}</router-link
-                        >
+                        v-for="metaInfo in video?.metaInfo ?? []"
+                        :key="metaInfo.title"
+                        class="my-2 rounded-lg bg-yt-bg px-3 py-2 text-yt-text-secondary"
+                    >
+                        <span>{{ metaInfo.description ?? metaInfo.title }}</span>
+                        <a v-for="(link, linkIndex) in metaInfo.urls" :key="linkIndex" :href="link" class="underline">{{
+                            metaInfo.urlTexts[linkIndex]
+                        }}</a
+                        ><br />
                     </div>
-                </template>
 
-                <hr />
+                    <span
+                        v-show="video?.chapters?.length > 0"
+                        class="mt-2 inline-flex items-center gap-2 text-xs text-yt-text-secondary"
+                    >
+                        <UiCheckbox id="showChapters" v-model="showChapters" />
+                        <label v-t="'actions.show_chapters'" for="showChapters" />
+                    </span>
 
-                <label for="chkAutoLoop"><strong v-text="`${$t('actions.loop_this_video')}:`" /></label>
-                <UiCheckbox id="chkAutoLoop" v-model="selectedAutoLoop" class="ml-1.5" @change="onChange($event)" />
-                <br />
-                <label for="chkAutoPlay"><strong v-text="`${$t('actions.auto_play_next_video')}:`" /></label>
-                <select
-                    id="chkAutoPlay"
-                    v-model.number="selectedAutoPlay"
-                    class="ml-1.5 h-8 rounded-md bg-gray-300 px-2.5 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
-                    @change="onChange($event)"
-                >
-                    <option v-t="'actions.never'" value="0" />
-                    <option v-t="'actions.playlists_only'" value="1" />
-                    <option v-t="'actions.always'" value="2" />
-                </select>
+                    <template v-if="showDesc">
+                        <!-- eslint-disable-next-line vue/no-v-html -->
+                        <div
+                            class="mt-2 text-sm/relaxed wrap-break-word text-yt-text [&_a]:underline [&_a]:brightness-75"
+                            v-html="purifiedDescription"
+                        />
 
-                <hr />
-                <a
-                    v-t="`actions.${showRecs ? 'minimize_recommendations' : 'show_recommendations'}`"
-                    class="mb-2 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
-                    @click="showRecs = !showRecs"
-                />
+                        <div
+                            v-if="sponsors && sponsors.segments"
+                            class="mt-2 text-xs text-yt-text-secondary"
+                            v-text="`${$t('video.sponsor_segments')}: ${sponsors.segments.length}`"
+                        />
+                        <div
+                            v-if="video.category"
+                            class="text-xs text-yt-text-secondary"
+                            v-text="`${$t('video.category')}: ${video.category}`"
+                        />
+                        <div
+                            class="text-xs text-yt-text-secondary"
+                            v-text="`${$t('video.license')}: ${video.license}`"
+                        />
+                        <div
+                            class="text-xs text-yt-text-secondary capitalize"
+                            v-text="`${$t('video.visibility')}: ${video.visibility}`"
+                        />
+
+                        <div v-if="video.tags" class="mt-2 flex flex-wrap gap-2">
+                            <router-link
+                                v-for="tag in video.tags"
+                                :key="tag"
+                                class="inline-flex h-7 items-center rounded-full bg-yt-bg px-3 text-xs text-yt-text hover:bg-yt-surface-hover"
+                                :to="`/results?search_query=${encodeURIComponent(tag)}`"
+                                >{{ tag }}</router-link
+                            >
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Playback options -->
+                <div class="mb-4 flex flex-wrap items-center gap-4 text-sm text-yt-text-secondary">
+                    <span class="inline-flex items-center gap-2">
+                        <UiCheckbox id="chkAutoLoop" v-model="selectedAutoLoop" @change="onChange($event)" />
+                        <label v-t="'actions.loop_this_video'" for="chkAutoLoop" />
+                    </span>
+                    <span class="inline-flex items-center gap-2">
+                        <label v-t="'actions.auto_play_next_video'" for="chkAutoPlay" />
+                        <select
+                            id="chkAutoPlay"
+                            v-model.number="selectedAutoPlay"
+                            class="h-8 rounded-md bg-yt-surface px-2 text-yt-text"
+                            @change="onChange($event)"
+                        >
+                            <option v-t="'actions.never'" value="0" />
+                            <option v-t="'actions.playlists_only'" value="1" />
+                            <option v-t="'actions.always'" value="2" />
+                        </select>
+                    </span>
+                    <button
+                        v-t="`actions.${showRecs ? 'minimize_recommendations' : 'show_recommendations'}`"
+                        class="ml-auto cursor-pointer rounded-full bg-yt-surface px-3 py-1.5 text-yt-text hover:bg-yt-surface-hover"
+                        @click="showRecs = !showRecs"
+                    />
+                </div>
                 <div v-if="isMobile">
-                    <hr v-show="showRecs" />
                     <div v-show="showRecs">
                         <ContentItem
                             v-for="related in video.relatedStreams"
@@ -284,28 +303,31 @@
                             width="168"
                         />
                     </div>
-                    <hr class="" />
                 </div>
 
+                <!-- Comments -->
                 <div class="flex flex-col">
-                    <div class="">
+                    <div class="mb-3 flex items-center gap-4 text-yt-text">
+                        <h2
+                            v-if="!comments?.disabled"
+                            class="text-lg font-semibold"
+                            v-text="
+                                `${$t('video.comments') ?? 'Comments'} · ${numberFormat(comments?.commentCount ?? 0)}`
+                            "
+                        />
                         <button
                             v-if="!comments?.disabled"
-                            class="mb-2 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                            class="ml-auto cursor-pointer text-sm text-yt-text-secondary hover:text-yt-text"
                             @click="toggleCommentsVisibility"
-                            v-text="
-                                `${$t(
-                                    showComments ? 'actions.minimize_comments' : 'actions.show_comments',
-                                )} (${numberFormat(comments?.commentCount)})`
-                            "
+                            v-text="$t(showComments ? 'actions.minimize_comments' : 'actions.show_comments')"
                         />
                     </div>
                     <div v-if="!showComments" class=""></div>
                     <div v-else-if="!comments" class="">
-                        <p v-t="'comment.loading'" class="mt-8 text-center"></p>
+                        <p v-t="'comment.loading'" class="mt-8 text-center text-yt-text-secondary"></p>
                     </div>
                     <div v-else-if="comments.disabled" class="">
-                        <p v-t="'comment.disabled'" class="mt-8 text-center"></p>
+                        <p v-t="'comment.disabled'" class="mt-8 text-center text-yt-text-secondary"></p>
                     </div>
                     <div v-else ref="commentsEl" class="">
                         <CommentItem
@@ -334,7 +356,6 @@
                     :selected-index="index"
                     :prefer-listen="isListening"
                 />
-                <hr v-show="showRecs" />
                 <div v-show="showRecs">
                     <ContentItem
                         v-for="related in video.relatedStreams"

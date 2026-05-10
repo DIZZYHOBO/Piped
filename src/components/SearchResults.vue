@@ -1,24 +1,34 @@
 <template>
-    <h1 class="my-2 text-center" v-text="$route.query.search_query" />
+    <div class="pt-3 pb-2">
+        <p class="text-xs text-yt-text-secondary">Search results for</p>
+        <h1 class="text-2xl font-bold text-yt-text" v-text="$route.query.search_query" />
+    </div>
 
-    <label for="ddlSearchFilters">
-        <strong v-text="`${$t('actions.filter')}:`" />
-    </label>
-    <select
-        id="ddlSearchFilters"
-        v-model="selectedFilter"
-        default="all"
-        class="h-8 w-auto rounded-md bg-gray-300 px-2.5 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
-        @change="updateFilter()"
-    >
-        <option v-for="filter in availableFilters" :key="filter" v-t="`search.${filter}`" :value="filter" />
-    </select>
+    <!-- Filter chips -->
+    <nav class="sticky top-(--topbar-h) z-20 -mx-1 scrollbar-hidden flex gap-2 overflow-x-auto bg-yt-bg px-1 py-3">
+        <button
+            v-for="filter in availableFilters"
+            :key="filter"
+            v-t="`search.${filter}`"
+            class="shrink-0 rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
+            :class="
+                selectedFilter === filter
+                    ? 'border-transparent bg-yt-text text-yt-bg'
+                    : 'border-yt-border bg-yt-surface text-yt-text hover:bg-yt-surface-hover'
+            "
+            @click="
+                selectedFilter = filter;
+                updateFilter();
+            "
+        />
+    </nav>
 
-    <hr />
-
-    <div v-if="results && results.corrected">
-        <i18n-t keypath="search.did_you_mean" tag="div" class="text-lg">
-            <router-link :to="{ name: 'SearchResults', query: { search_query: results.suggestion } }">
+    <div v-if="results && results.corrected" class="mb-2 text-base text-yt-text-secondary">
+        <i18n-t keypath="search.did_you_mean" tag="div">
+            <router-link
+                :to="{ name: 'SearchResults', query: { search_query: results.suggestion } }"
+                class="text-yt-text underline"
+            >
                 <em v-text="results.suggestion" />
             </router-link>
         </i18n-t>
@@ -26,7 +36,7 @@
 
     <LoadingIndicatorPage
         :show-content="Boolean(results != null && results.items?.length)"
-        class="mx-2 grid grid-cols-1 gap-y-5 max-md:gap-x-3 sm:mx-0 sm:grid-cols-2 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:grid-cols-5"
+        class="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
     >
         <template v-for="result in results.items" :key="result.url">
             <ContentItem :item="result" height="94" width="168" />
