@@ -18,7 +18,7 @@
             <label v-t="'actions.time_code'" />
             <input
                 v-model="timeStamp"
-                class="h-8 w-12 rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                class="h-9 w-14 rounded-lg bg-yt-surface px-3 text-yt-text outline-none focus:ring-2 focus:ring-yt-brand-red"
                 type="text"
                 @change="onChange"
             />

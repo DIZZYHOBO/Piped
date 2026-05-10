@@ -1,6 +1,6 @@
 <template>
     <div
-        class="absolute left-1/2 z-10 box-border w-full max-w-3xl -translate-x-1/2 transform-gpu bg-gray-300 max-md:max-w-[calc(100%-0.5rem)] dark:bg-dark-400"
+        class="absolute left-1/2 z-10 box-border w-full max-w-3xl -translate-x-1/2 transform-gpu bg-yt-bg shadow-lg ring-1 ring-yt-border max-md:max-w-[calc(100%-0.5rem)]"
     >
         <ul>
             <li

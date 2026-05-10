@@ -44,11 +44,7 @@
                 </div>
 
                 <div class="ml-2 flex flex-col">
-                    <span
-                        class="hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
-                        :title="related.title"
-                        v-text="related.title"
-                    />
+                    <span class="hover:text-yt-text-secondary" :title="related.title" v-text="related.title" />
                     <div class="flex-1">
                         <router-link
                             v-if="related.uploaderUrl && related.uploaderName && !hideChannel"

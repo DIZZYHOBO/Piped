@@ -47,7 +47,7 @@
         <select
             id="ddlCountrySelection"
             v-model="countrySelected"
-            class="h-8 w-50 bg-gray-300 text-gray-600 dark:bg-dark-400 dark:text-gray-400"
+            class="h-9 w-50 rounded-md bg-yt-surface px-2 text-yt-text"
             @change="onChange($event)"
         >
             <option v-for="country in countryMap" :key="country.code" :value="country.code" v-text="country.name" />
@@ -227,9 +227,7 @@
 
     <h2 class="text-center">SponsorBlock</h2>
     <p class="text-center">
-        <span v-t="'actions.uses_api_from'" /><a
-            class="hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
-            href="https://sponsor.ajay.app/"
+        <span v-t="'actions.uses_api_from'" /><a class="hover:text-yt-text-secondary" href="https://sponsor.ajay.app/"
             >sponsor.ajay.app</a
         >
     </p>
@@ -275,9 +273,7 @@
 
     <h2 v-t="'titles.dearrow'" class="text-center" />
     <p class="text-center">
-        <span v-t="'actions.uses_api_from'" /><a
-            class="hover:text-red-500 focus:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400"
-            href="https://sponsor.ajay.app/"
+        <span v-t="'actions.uses_api_from'" /><a class="hover:text-yt-text-secondary" href="https://sponsor.ajay.app/"
             >sponsor.ajay.app</a
         >
     </p>
@@ -361,7 +357,7 @@
                     v-model="password"
                     :placeholder="$t('login.password')"
                     :aria-label="$t('login.password')"
-                    class="mr-2 h-8 w-auto rounded-md bg-gray-300 px-2.5 text-gray-600 focus:shadow-red-400 focus:outline-2 focus:outline-red-500 dark:bg-dark-400 dark:text-gray-400"
+                    class="h-9 rounded-lg bg-yt-surface px-3 text-yt-text outline-none focus:ring-2 focus:ring-yt-brand-red"
                     type="password"
                     @keyup.enter="deleteAccount"
                 />
@@ -428,7 +424,7 @@
     />
     <button
         v-t="'actions.backup_preferences'"
-        class="mx-4 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+        class="mx-4 inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
         @click="backupPreferences()"
     />
     <label

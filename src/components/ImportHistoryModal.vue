@@ -7,7 +7,7 @@
                 <div>
                     <input
                         ref="fileSelector"
-                        class="mb-2 ml-2 inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                        class="mb-2 ml-2 inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                         type="file"
                         @change="fileChange"
                     />
@@ -27,7 +27,7 @@
                     <ProgressRoot
                         :model-value="itemsLength ? index : 0"
                         :max="itemsLength || 1"
-                        class="relative h-2.5 w-full overflow-hidden rounded-full bg-gray-300 dark:bg-dark-400"
+                        class="relative h-2.5 w-full overflow-hidden rounded-full bg-yt-surface"
                     >
                         <ProgressIndicator
                             class="h-full rounded-full bg-red-500 transition-transform duration-200 ease-out"
@@ -45,7 +45,7 @@
                 <br />
                 <div>
                     <a
-                        class="inline-block w-auto cursor-pointer rounded-sm bg-gray-300 py-2 text-gray-600 hover:bg-gray-500 hover:text-white focus:shadow-red-400 focus:outline-2 focus:outline-red-500 max-md:px-2 md:px-4 dark:bg-dark-400 dark:text-gray-400 dark:hover:bg-dark-300"
+                        class="inline-flex h-9 cursor-pointer items-center rounded-full bg-yt-surface px-4 text-sm font-medium text-yt-text hover:bg-yt-surface-hover"
                         @click="handleImport"
                         v-text="$t('actions.import')"
                     />
