@@ -44,7 +44,7 @@ import LoadingIndicatorPage from "./LoadingIndicatorPage.vue";
 import VideoItem from "./VideoItem.vue";
 import { fetchJson, apiUrl } from "@/composables/useApi.js";
 import { getPreferenceString } from "@/composables/usePreferences.js";
-import { updateWatched } from "@/composables/useMisc.js";
+import { updateWatched, filterHiddenStreams } from "@/composables/useMisc.js";
 import { fetchDeArrowContent } from "@/composables/useSubscriptions.js";
 import { getHomePage } from "@/composables/useMisc.js";
 
@@ -67,7 +67,7 @@ onMounted(() => {
     let region = getPreferenceString("region", "US");
 
     fetchTrending(region).then(vids => {
-        videos.value = vids;
+        videos.value = filterHiddenStreams(vids);
         updateWatched(videos.value);
         fetchDeArrowContent(videos.value);
     });

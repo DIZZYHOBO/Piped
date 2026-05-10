@@ -11,6 +11,10 @@
                 <template #icon><i-fa6-solid-house /></template>
                 Home
             </NavLink>
+            <NavLink to="/shorts" :collapsed="collapsed">
+                <template #icon><i-fa6-solid-bolt /></template>
+                Shorts
+            </NavLink>
             <NavLink to="/feed" :collapsed="collapsed">
                 <template #icon><i-fa6-solid-rectangle-list /></template>
                 Subscriptions

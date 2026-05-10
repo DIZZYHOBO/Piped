@@ -113,7 +113,7 @@ import {
     toggleSubscriptionState,
     fetchDeArrowContent,
 } from "@/composables/useSubscriptions.js";
-import { updateWatched } from "@/composables/useMisc.js";
+import { updateWatched, filterHiddenStreams } from "@/composables/useMisc.js";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -144,7 +144,7 @@ async function getChannelData() {
         .then(() => {
             if (!channel.value.error) {
                 document.title = channel.value.name + " - Piped";
-                contentItems.value = channel.value.relatedStreams;
+                contentItems.value = filterHiddenStreams(channel.value.relatedStreams);
                 fetchSubscribedStatus();
                 updateWatched(channel.value.relatedStreams);
                 fetchDeArrowContent(channel.value.relatedStreams);

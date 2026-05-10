@@ -91,6 +91,9 @@
         <router-link to="/" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
             <i-fa6-solid-house /> Home
         </router-link>
+        <router-link to="/shorts" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
+            <i-fa6-solid-bolt /> Shorts
+        </router-link>
         <router-link to="/feed" class="flex items-center gap-3 px-4 py-3 hover:bg-yt-surface">
             <i-fa6-solid-rectangle-list /> Subscriptions
         </router-link>

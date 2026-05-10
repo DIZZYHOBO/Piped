@@ -199,6 +199,12 @@
         </template>
         <PreferenceSwitch id="chkHideWatched" v-model="hideWatched" @change="onChange" />
     </PreferenceRow>
+    <PreferenceRow for-id="chkHideLive">
+        <template #label>
+            <strong>Hide live streams</strong>
+        </template>
+        <PreferenceSwitch id="chkHideLive" v-model="hideLive" @change="onChange" />
+    </PreferenceRow>
     <PreferenceRow for-id="ddlEnabledCodecs">
         <template #label>
             <strong v-t="'actions.enabled_codecs'" />
@@ -525,6 +531,7 @@ const searchSuggestions = usePreferenceBoolean("searchSuggestions", true);
 const watchHistory = usePreferenceBoolean("watchHistory", false);
 const searchHistory = usePreferenceBoolean("searchHistory", false);
 const hideWatched = usePreferenceBoolean("hideWatched", false);
+const hideLive = usePreferenceBoolean("hideLive", true);
 const selectedLanguage = usePreferenceString("hl", "en");
 const languages = [
     { code: "ar", name: "Arabic" },

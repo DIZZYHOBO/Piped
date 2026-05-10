@@ -83,7 +83,7 @@ import { authApiUrl, getAuthToken, isAuthenticated } from "@/composables/useApi.
 import { getPreferenceBoolean, getPreferenceString, setPreference } from "@/composables/usePreferences.js";
 import { fetchFeed, getUnauthenticatedChannels, fetchDeArrowContent } from "@/composables/useSubscriptions.js";
 import { getChannelGroups } from "@/composables/useChannelGroups.js";
-import { updateWatched } from "@/composables/useMisc.js";
+import { updateWatched, isLiveStream, hideLiveEnabled } from "@/composables/useMisc.js";
 
 const { t } = useI18n();
 
@@ -104,9 +104,9 @@ const getRssUrl = computed(() => {
 const filteredVideos = computed(() => {
     const selectedGroup = channelGroups.value.filter(group => group.groupName == selectedGroupName.value);
 
-    const vids = getPreferenceBoolean("hideWatched", false)
-        ? videos.value.filter(video => !video.watched)
-        : videos.value;
+    let vids = videos.value;
+    if (getPreferenceBoolean("hideWatched", false)) vids = vids.filter(video => !video.watched);
+    if (hideLiveEnabled()) vids = vids.filter(video => !isLiveStream(video));
 
     return selectedGroupName.value == ""
         ? vids

@@ -13,6 +13,11 @@ const routes = [
         component: () => import("../components/TrendingPage.vue"),
     },
     {
+        path: "/shorts",
+        name: "Shorts",
+        component: () => import("../components/ShortsPage.vue"),
+    },
+    {
         path: "/preferences",
         name: "Preferences",
         component: () => import("../components/PreferencesPage.vue"),
