@@ -29,18 +29,24 @@
         :show-content="hasLoaded"
         class="grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
     >
-        <article v-for="short in shorts" :key="short.url" class="flex flex-col">
-            <router-link
-                class="relative block overflow-hidden rounded-xl bg-yt-surface"
-                :to="{ path: '/watch', query: { v: short.url.substr(-11) } }"
+        <article v-for="(short, idx) in shorts" :key="short.url" class="group flex flex-col">
+            <button
+                type="button"
+                class="relative block cursor-pointer overflow-hidden rounded-xl bg-yt-surface text-left"
+                @click="openPlayer(idx)"
             >
                 <img loading="lazy" class="aspect-9/16 w-full object-cover" :src="short.thumbnail" :alt="short.title" />
+                <span
+                    class="absolute inset-0 grid place-items-center bg-black/0 text-3xl text-white opacity-0 transition group-hover:bg-black/30 group-hover:opacity-100"
+                >
+                    <i-fa6-solid-play />
+                </span>
                 <span
                     v-if="short.views >= 0"
                     class="absolute bottom-2 left-2 rounded-md bg-black/85 px-2 py-1 text-xs font-medium text-white"
                     v-text="`${numberFormat(short.views)} views`"
                 />
-            </router-link>
+            </button>
             <h3
                 class="mt-2 line-clamp-2 text-sm/snug font-medium text-yt-text"
                 :title="short.title"
@@ -62,11 +68,19 @@
             No shorts available for this region right now. Try another.
         </p>
     </LoadingIndicatorPage>
+
+    <ShortsPlayer
+        v-if="playerIndex !== null"
+        :shorts="shorts"
+        :initial-index="playerIndex"
+        @close="playerIndex = null"
+    />
 </template>
 
 <script setup>
 import { ref, onMounted, onActivated } from "vue";
 import LoadingIndicatorPage from "./LoadingIndicatorPage.vue";
+import ShortsPlayer from "./ShortsPlayer.vue";
 import { fetchJson, apiUrl } from "@/composables/useApi.js";
 import { getPreferenceString } from "@/composables/usePreferences.js";
 import { numberFormat } from "@/composables/useFormatting.js";
@@ -75,7 +89,12 @@ import { fetchDeArrowContent } from "@/composables/useSubscriptions.js";
 
 const shorts = ref([]);
 const hasLoaded = ref(false);
+const playerIndex = ref(null);
 const selectedRegion = ref(getPreferenceString("region", "US"));
+
+function openPlayer(idx) {
+    playerIndex.value = idx;
+}
 
 const regions = [
     { code: "US", label: "United States" },
